@@ -1,0 +1,21 @@
+{
+  "databaseChangeLog": [
+    {
+      "include": {
+        "file": "db/changelog/db.changelog.V20200518-creates-hibernate-sequence.json",
+        "relativeToChangelogFile": false
+      }
+    },
+    {
+      "include": {
+        "file": "db/changelog/db.changelog.V20200518-creates-table-manufacturer.json",
+        "relativeToChangelogFile": false
+      }
+    },{
+      "include": {
+        "file": "db/changelog/db.changelog.V20200518-creates-table-beer.json",
+        "relativeToChangelogFile": false
+      }
+    }
+  ]
+}

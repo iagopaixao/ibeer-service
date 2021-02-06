@@ -1,0 +1,27 @@
+version: '3.5'
+
+services:
+  ibeer_db:
+    image: postgres:latest
+    networks:
+      ibeer_network:
+        ipv4_address: 172.28.0.3
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ibeer_db_data:/var/lib/postgresql/data
+    container_name: ibeer-db
+    environment:
+      POSTGRES_DB: ibeer_db
+      POSTGRES_PASSWORD: secret
+
+networks:
+  ibeer_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+volumes:
+  ibeer_db_data:
+    driver: local

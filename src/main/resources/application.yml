@@ -1,0 +1,62 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: iBeer
+  main:
+    allow-bean-definition-overriding: true
+  messages:
+    basename: config.i18n.messages
+  banner:
+    location: classpath:static/banner.txt
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ibeer_db
+    driverClassName: org.postgresql.Driver
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:secret}
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.json
+    default-schema: public
+    liquibase-schema: public
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+    properties:
+      hibernate:
+        id:
+          new_generator_mappings: false
+        default_schema: public
+        ddl-auto: validate
+        show_sql: true
+        format_sql: true
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+          implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+        jdbc:
+          batch_size: 50
+          order_inserts: true
+          order_updates: true
+          batch_versioned_data: true
+          lob:
+            non_contextual_creation: true
+          temp:
+            use_jdbc_metadata_defaults: false
+
+springdoc:
+  swagger-ui:
+    operationsSorter: method
+    path: /swagger-ui.html
+    api-docs:
+      enabled: false
+
+swagger-ui:
+  api-info:
+    title: "REST support for iBeer API"
+    description: "This is the REST UI support of iBeer API. Here you can perform REST operations on the API."
+    license: "Apache License 2.0"
+    version: "0.0.1"
+    base_package: "com.ipaixao.ibeer"
+    contact_name: "Iago Paixao"
+    contact_url: "https://github.com/iagopaixao/i-beer"
+    contact_email: "euiagopaixao@gmail.com"

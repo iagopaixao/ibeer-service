@@ -1,0 +1,41 @@
+server:
+  port: 8081
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+  datasource:
+    url: jdbc:h2:mem:ibeer_db
+    driverClassName: org.h2.Driver
+    username: root
+    password: secret
+
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.json
+    default-schema: public
+    liquibase-schema: public
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: h2
+    properties:
+      hibernate:
+        id:
+          new_generator_mappings: false
+        default_schema: public
+        ddl-auto: validate
+        show_sql: true
+        format_sql: true
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+          implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+        jdbc:
+          batch_size: 50
+          order_inserts: true
+          order_updates: true
+          batch_versioned_data: true
+          lob:
+            non_contextual_creation: true
+          temp:
+            use_jdbc_metadata_defaults: false

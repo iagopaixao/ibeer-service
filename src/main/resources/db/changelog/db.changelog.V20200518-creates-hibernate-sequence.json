@@ -1,0 +1,19 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "V20200518-01",
+        "author": "iago.paixao",
+        "changes": [
+          {
+            "createSequence": {
+              "minValue": 1,
+              "sequenceName": "hibernate_sequence",
+              "startValue": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
