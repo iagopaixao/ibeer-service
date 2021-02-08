@@ -7,9 +7,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 public record BeerMockFactory() {
@@ -44,15 +46,84 @@ public record BeerMockFactory() {
         );
     }
 
-    static Beer beer() {
-        return Beer.builder().id(10L).name("Heineken").build();
+    public static Stream<Arguments> beerDTOStub() {
+        return Stream.of(
+                arguments(
+                        newBeerDTO(),
+                        beerResponse()
+                )
+        );
     }
 
-    static BeerDTO beerDTO() {
-        return new BeerDTO(10L, "Heineken", null, null, null, null, null, null);
+    public static Stream<Arguments> beerMapStub() {
+        return Stream.of(
+                arguments(
+                        beer(),
+                        beerResponse()
+                )
+        );
     }
 
-    static BeerResponse beerResponse() {
-        return new BeerResponse("Heineken", null, null, null, null, null, null);
+    public static Beer newBeer() {
+        return Beer.builder()
+                .name(beer().getName())
+                .style(beer().getStyle())
+                .abv(beer().getAbv())
+                .ibu(beer().getIbu())
+                .milliliter(beer().getMilliliter())
+                .price(beer().getPrice())
+                .manufacturer(newManufacturer())
+                .build();
+    }
+
+    public static Beer beer() {
+        return Beer.builder()
+                .id(10L)
+                .name("Heineken")
+                .style("Pale Lager")
+                .abv(5.0)
+                .ibu(19)
+                .milliliter(600)
+                .price(BigDecimal.valueOf(9.90))
+                .manufacturer(manufacturer())
+                .build();
+    }
+
+    public static BeerDTO beerDTO() {
+        return new BeerDTO(
+                beer().getId(),
+                beer().getName(),
+                beer().getIbu(),
+                beer().getAbv(),
+                beer().getStyle(),
+                beer().getPrice(),
+                beer().getMilliliter(),
+                manufacturerDTO()
+        );
+    }
+
+    public static BeerDTO newBeerDTO() {
+        return new BeerDTO(
+                null,
+                beer().getName(),
+                beer().getIbu(),
+                beer().getAbv(),
+                beer().getStyle(),
+                beer().getPrice(),
+                beer().getMilliliter(),
+                newManufacturerDTO()
+        );
+    }
+
+    public static BeerResponse beerResponse() {
+        return new BeerResponse(
+                beer().getName(),
+                beer().getStyle(),
+                beer().getIbu(),
+                beer().getAbv(),
+                beer().getMilliliter(),
+                beer().getPrice(),
+                beer().getManufacturer().getName()
+        );
     }
 }

@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 
 public record BeerResponse(@JsonProperty("name") String name,
-                           @JsonProperty("abv") Double abv,
-                           @JsonProperty("ibu") Integer ibu,
                            @JsonProperty("style") String style,
-                           @JsonProperty("price") BigDecimal price,
+                           @JsonProperty("ibu") Integer ibu,
+                           @JsonProperty("abv") Double abv,
                            @JsonProperty("milliliter") Integer milliliter,
+                           @JsonProperty("price") BigDecimal price,
                            @JsonProperty("manufacturer") String manufacturer) {
 
     public BeerResponse() {

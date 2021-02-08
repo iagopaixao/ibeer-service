@@ -52,7 +52,7 @@ public class ManufacturerService {
         return repository.findById(id)
                 .map(mapper::toResponse)
                 .orElseThrow(() -> {
-                    final var e = new EntityNotFoundException("Entity not found.");
+                    final var e = new EntityNotFoundException("Entity not found!");
                     log.error("m=getById, status=error, message={}", e.getMessage(), e);
                     return e;
                 });
@@ -60,7 +60,7 @@ public class ManufacturerService {
 
     @Transactional
     public ManufacturerResponse update(ManufacturerDTO dto) {
-        return mapper.toResponse(repository.save(mapper.toEntity(dto)));
+        return create(dto);
     }
 
     @Transactional
