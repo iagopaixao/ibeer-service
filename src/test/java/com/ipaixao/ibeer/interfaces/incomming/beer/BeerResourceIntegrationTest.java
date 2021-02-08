@@ -4,6 +4,7 @@ import com.ipaixao.ibeer.base.BaseIntegrationTest;
 import com.ipaixao.ibeer.domain.beer.BeerRepository;
 import com.ipaixao.ibeer.interfaces.incomming.beer.dto.BeerDTO;
 import com.ipaixao.ibeer.interfaces.incomming.beer.response.BeerResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -21,6 +22,11 @@ public class BeerResourceIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private BeerRepository repository;
+
+    @BeforeEach
+    void setup() {
+        repository.deleteAll();
+    }
 
     @ParameterizedTest
     @MethodSource("com.ipaixao.ibeer.domain.beer.mock.BeerMockFactory#beerDTOStub")

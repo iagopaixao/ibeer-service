@@ -4,6 +4,7 @@ import com.ipaixao.ibeer.base.BaseIntegrationTest;
 import com.ipaixao.ibeer.domain.manufacturer.ManufacturerRepository;
 import com.ipaixao.ibeer.interfaces.incomming.manufacturer.dto.ManufacturerDTO;
 import com.ipaixao.ibeer.interfaces.incomming.manufacturer.response.ManufacturerResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,6 +21,11 @@ import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
 public class ManufacturerResourceIntegrationTest extends BaseIntegrationTest {
     @Autowired
     private ManufacturerRepository repository;
+
+    @BeforeEach
+    void setup() {
+        repository.deleteAll();
+    }
 
     @ParameterizedTest
     @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturerDTOStub")
