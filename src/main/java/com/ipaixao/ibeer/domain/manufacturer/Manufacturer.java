@@ -3,16 +3,20 @@ package com.ipaixao.ibeer.domain.manufacturer;
 import com.ipaixao.ibeer.domain.beer.Beer;
 import com.ipaixao.ibeer.domain.common.DateAudit;
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 import static lombok.AccessLevel.PRIVATE;
 
-@Data
 @Table
 @Entity
+@Getter
+@Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor(access = PRIVATE)
 public class Manufacturer {
@@ -30,6 +34,7 @@ public class Manufacturer {
     private String birthplace;
 
     @OneToMany(mappedBy = "manufacturer", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Beer> beers;
 
     @Embedded
@@ -37,4 +42,17 @@ public class Manufacturer {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private DateAudit dateAudit = new DateAudit();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Manufacturer that = (Manufacturer) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

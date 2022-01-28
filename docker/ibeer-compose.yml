@@ -1,23 +1,38 @@
-version: '3.5'
+version: '3.8'
 
 services:
   ibeer_db:
+    container_name: ibeer-db
     image: postgres:latest
     networks:
-      ibeer_network:
-        ipv4_address: 172.28.0.3
+      ibeer_network_backend:
+        ipv4_address: 172.28.0.2
     restart: always
     ports:
-      - 5432:5432
+      - "127.0.0.1:5432:5432"
     volumes:
       - ibeer_db_data:/var/lib/postgresql/data
-    container_name: ibeer-db
     environment:
       POSTGRES_DB: ibeer_db
       POSTGRES_PASSWORD: secret
+  ibeer-app:
+    container_name: ibeer-app
+    image: ipaixao/i-beer:0.0.1
+    depends_on:
+      - ibeer_db
+    networks:
+      ibeer_network_backend:
+        ipv4_address: 172.28.0.3
+    restart: always
+    links:
+      - ibeer-db
+    ports:
+      - "127.0.0.1:8081:8081"
 
 networks:
-  ibeer_network:
+  ibeer_network_backend:
+    name: ibeer_network_backend
+    attachable: true
     ipam:
       driver: default
       config:

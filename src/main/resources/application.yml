@@ -11,7 +11,7 @@ spring:
   banner:
     location: classpath:static/banner.txt
   datasource:
-    url: jdbc:postgresql://172.28.0.3:5432/ibeer_db
+    url: jdbc:postgresql://172.28.0.2:5432/ibeer_db
     driverClassName: org.postgresql.Driver
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:secret}
@@ -42,6 +42,15 @@ spring:
             non_contextual_creation: true
           temp:
             use_jdbc_metadata_defaults: false
+management:
+  endpoints:
+    jmx:
+      exposure:
+        include: "health,info,metrics,prometheus"
+  endpoint:
+    health:
+      show-details: "always"
+      show-components: "always"
 
 springdoc:
   swagger-ui:

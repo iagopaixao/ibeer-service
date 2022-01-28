@@ -5,7 +5,6 @@ import com.ipaixao.ibeer.interfaces.incomming.manufacturer.dto.ManufacturerDTO;
 import com.ipaixao.ibeer.interfaces.incomming.manufacturer.response.ManufacturerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,6 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/manufacturers")
 @Schema(name = "Manufacturer Resource", description = "Allows you to perform operations on the manufacturer resource")
 public record ManufacturerResource(ManufacturerService service) {

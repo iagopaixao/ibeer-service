@@ -5,7 +5,6 @@ import com.ipaixao.ibeer.interfaces.incomming.beer.dto.BeerDTO;
 import com.ipaixao.ibeer.interfaces.incomming.beer.response.BeerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,6 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/beers")
 @Schema(name = "Beer Resource", title = "Allows you to perform operations on the beer resource")
 public record BeerResource(BeerService service) {

@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class BeerServiceTest {
+class BeerServiceTest {
 
     @Mock
     private BeerRepository repository;
@@ -76,7 +76,7 @@ public class BeerServiceTest {
 
     @ParameterizedTest
     @MethodSource("com.ipaixao.ibeer.domain.beer.mock.BeerMockFactory#beersStub")
-    public void shouldReturnAllBeersSuccessfully_whenGetAllIsCalled(
+    void shouldReturnAllBeersSuccessfully_whenGetAllIsCalled(
             Beer beer,
             PageImpl<Beer> beers,
             BeerResponse beerResponse,
