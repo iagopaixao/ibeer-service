@@ -1,3 +1,5 @@
+[![Build and Test Checker](https://github.com/iagopaixao/i-beer/actions/workflows/ci-build-checker.yml/badge.svg)](https://github.com/iagopaixao/i-beer/actions/workflows/ci-build-checker.yml)
+
 # iBeer
 
 A simple RESTful API to manage beers.
