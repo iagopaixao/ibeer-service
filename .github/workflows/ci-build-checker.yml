@@ -1,16 +1,17 @@
-name: Java CI Build Checker
+name: Build and Test Checker
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches: [ master ]
   pull_request:
-    branches: [ $default-branch ]
+    branches: [ master ]
 
 permissions:
   contents: read
 
 jobs:
-  build:
+  build-and-test:
+    name: build and test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -20,9 +21,9 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
         architecture: x64
-    - name: Validate Gradle wrapper
+    - name: Validate Gradle Wrapper
       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
-    - name: Build and Test with Gradle
+    - name: Build and Test
       uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
       with:
         arguments: -S -i build
