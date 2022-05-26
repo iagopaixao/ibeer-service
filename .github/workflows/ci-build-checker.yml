@@ -1,4 +1,4 @@
-name: Java CI Build Checker
+name: Build and Test Checker
 
 on:
   push:
@@ -25,4 +25,6 @@ jobs:
     - name: Build and Test
       uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
       with:
-        arguments: -S -i build
+        arguments: >-
+          -S -i build -x test
+          -S -i test
