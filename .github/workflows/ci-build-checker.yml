@@ -2,9 +2,9 @@ name: Build and Test Checker
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop, master ]
   pull_request:
-    branches: [ master ]
+    branches: [ develop, master ]
 
 permissions:
   contents: read
