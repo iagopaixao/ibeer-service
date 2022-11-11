@@ -25,7 +25,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ManufacturerServiceTest {
-
     @Mock
     private ManufacturerRepository repository;
     @Mock
@@ -36,7 +35,7 @@ public class ManufacturerServiceTest {
 
     @ParameterizedTest
     @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturerStub")
-    void shouldSuccessfullyCreateABeer_whenCreateIsCalled(Manufacturer manufacturer, ManufacturerDTO manufacturerDTO, ManufacturerResponse beerResponse) {
+    void shouldSuccessfullyCreateAManufacturer_whenCreateIsCalled(Manufacturer manufacturer, ManufacturerDTO manufacturerDTO, ManufacturerResponse beerResponse) {
         when(repository.findByName(manufacturer.getName())).thenReturn(Optional.empty());
         when(mapper.toEntity(manufacturerDTO)).thenReturn(manufacturer);
         when(repository.save(manufacturer)).thenReturn(manufacturer);
@@ -53,7 +52,7 @@ public class ManufacturerServiceTest {
 
     @ParameterizedTest
     @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturerStub")
-    void shouldThrowsBeerNameDuplicatedException_whenCreateIsCalled(Manufacturer manufacturer, ManufacturerDTO manufacturerDTO) {
+    void shouldThrowsManufacturerNameDuplicatedException_whenCreateIsCalled(Manufacturer manufacturer, ManufacturerDTO manufacturerDTO) {
         final var beerNameCaptor = ArgumentCaptor.forClass(String.class);
         final var beerCaptor = ArgumentCaptor.forClass(Manufacturer.class);
 
@@ -76,7 +75,7 @@ public class ManufacturerServiceTest {
 
     @ParameterizedTest
     @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturersStub")
-    public void shouldReturnAllBeersSuccessfully_whenGetAllIsCalled(
+    public void shouldReturnAllManufacturesSuccessfully_whenGetAllIsCalled(
             Manufacturer manufacturer,
             PageImpl<Manufacturer> beers,
             ManufacturerResponse beerResponse,
@@ -94,7 +93,7 @@ public class ManufacturerServiceTest {
 
     @ParameterizedTest
     @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturerByIdStub")
-    public void shouldReturnABeerSuccessfully_whenGetByIdIsCalled(long id, Manufacturer manufacturer, ManufacturerResponse beerResponse) {
+    public void shouldReturnAManufacturerSuccessfully_whenGetByIdIsCalled(long id, Manufacturer manufacturer, ManufacturerResponse beerResponse) {
         final var idCaptor = ArgumentCaptor.forClass(Long.class);
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(manufacturer));
@@ -130,7 +129,7 @@ public class ManufacturerServiceTest {
 
     @ParameterizedTest
     @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturerStub")
-    void shouldSuccessfullyUpdateABeer_whenUpdateIsCalled(Manufacturer manufacturer, ManufacturerDTO manufacturerDTO, ManufacturerResponse beerResponse) {
+    void shouldSuccessfullyUpdateAManufacturer_whenUpdateIsCalled(Manufacturer manufacturer, ManufacturerDTO manufacturerDTO, ManufacturerResponse beerResponse) {
         final var beerNameCaptor = ArgumentCaptor.forClass(String.class);
         final var idCaptor = ArgumentCaptor.forClass(Long.class);
 

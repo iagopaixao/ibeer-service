@@ -21,6 +21,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor(access = PROTECTED)
 public class BeerService {
 
@@ -43,12 +44,10 @@ public class BeerService {
                 .accept(duplicatedBeer);
     }
 
-    @Transactional(readOnly = true)
     public Page<BeerResponse> getAll(Pageable pageable) {
         return repository.findAll(pageable).map(mapper::toResponse);
     }
 
-    @Transactional(readOnly = true)
     public BeerResponse getById(long id) {
         return repository.findById(id)
                 .map(mapper::toResponse)

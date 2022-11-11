@@ -4,6 +4,7 @@ import com.ipaixao.ibeer.domain.common.NameDuplicatedException;
 import com.ipaixao.ibeer.interfaces.incomming.beer.dto.BeerDTO;
 import com.ipaixao.ibeer.interfaces.incomming.beer.mapper.BeerMapper;
 import com.ipaixao.ibeer.interfaces.incomming.beer.response.BeerResponse;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -25,7 +26,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BeerServiceTest {
-
     @Mock
     private BeerRepository repository;
     @Mock
@@ -76,11 +76,11 @@ class BeerServiceTest {
 
     @ParameterizedTest
     @MethodSource("com.ipaixao.ibeer.domain.beer.mock.BeerMockFactory#beersStub")
-    void shouldReturnAllBeersSuccessfully_whenGetAllIsCalled(
-            Beer beer,
-            PageImpl<Beer> beers,
-            BeerResponse beerResponse,
-            PageRequest pageRequest) {
+    @DisplayName("should return all beers successfully when getAll method is Called")
+    void shouldReturnAllBeersSuccessfully_whenGetAllIsCalled(Beer beer,
+                                                             PageImpl<Beer> beers,
+                                                             BeerResponse beerResponse,
+                                                             PageRequest pageRequest) {
 
         when(repository.findAll(pageRequest)).thenReturn(beers);
         when(mapper.toResponse(beer)).thenReturn(beerResponse);
@@ -189,5 +189,4 @@ class BeerServiceTest {
         verify(repository).deleteById(idCaptor.capture());
         assertSame(id, idCaptor.getValue());
     }
-
 }

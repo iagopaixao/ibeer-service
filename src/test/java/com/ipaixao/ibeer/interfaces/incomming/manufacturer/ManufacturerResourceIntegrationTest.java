@@ -29,7 +29,8 @@ public class ManufacturerResourceIntegrationTest extends BaseIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturerDTOStub")
-    void shouldSuccessfullyCreateAManufacturer_whenCreateIsCalled(ManufacturerDTO manufacturerDTO, ManufacturerResponse expected) throws Exception {
+    void shouldSuccessfullyCreateAManufacturer_whenCreateIsCalled(ManufacturerDTO manufacturerDTO,
+                                                                  ManufacturerResponse expected) throws Exception {
         mockMvc.perform(
                 post("/manufacturers")
                         .accept(APPLICATION_JSON)

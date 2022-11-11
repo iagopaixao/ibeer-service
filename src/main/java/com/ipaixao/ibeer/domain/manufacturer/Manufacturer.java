@@ -23,7 +23,8 @@ public class Manufacturer {
 
     @Id
     @Column(name = "id", unique = true, nullable = false)
-    @GeneratedValue(generator = "manufacturer_id_seq", strategy = GenerationType.SEQUENCE)
+//    @GeneratedValue(generator = "manufacturer_id_seq", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @SequenceGenerator(name = "manufacturer_seq", sequenceName = "manufacturer_id_seq", allocationSize = 1)
     private Long id;
 
@@ -33,8 +34,8 @@ public class Manufacturer {
     @Column(nullable = false)
     private String birthplace;
 
-    @OneToMany(mappedBy = "manufacturer", cascade = CascadeType.ALL)
     @ToString.Exclude
+    @OneToMany(mappedBy = "manufacturer", cascade = CascadeType.ALL)
     private List<Beer> beers;
 
     @Embedded

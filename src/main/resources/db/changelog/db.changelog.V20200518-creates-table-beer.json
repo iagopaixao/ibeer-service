@@ -2,7 +2,7 @@
   "databaseChangeLog": [
     {
       "changeSet": {
-        "id": "V20200518-03",
+        "id": "V20220329-03",
         "author": "iago.paixao",
         "changes": [
           {
@@ -12,7 +12,7 @@
                 {
                   "column": {
                     "name": "id",
-                    "type": "bigserial",
+                    "type": "bigint",
                     "autoIncrement": true,
                     "constraints": {
                       "primaryKey": true,
@@ -23,7 +23,7 @@
                 {
                   "column": {
                     "name": "manufacturer_id",
-                    "type": "bigserial",
+                    "type": "bigint",
                     "constraints": {
                       "nullable": false,
                       "foreignKeyName": "fk_manufacturer_beer",
@@ -70,7 +70,7 @@
                 {
                   "column": {
                     "name": "price",
-                    "type": "numeric(30,2)",
+                    "type": "decimal(30,2)",
                     "constraints": {
                       "nullable": false
                     }
@@ -88,7 +88,7 @@
                 {
                   "column": {
                     "name": "created_at",
-                    "type": "timestamp without time zone",
+                    "type": "timestamp",
                     "constraints": {
                       "nullable": false
                     }
@@ -97,7 +97,7 @@
                 {
                   "column": {
                     "name": "updated_at",
-                    "type": "timestamp without time zone",
+                    "type": "timestamp",
                     "constraints": {
                       "nullable": true
                     }

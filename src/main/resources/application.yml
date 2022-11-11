@@ -11,19 +11,24 @@ spring:
   banner:
     location: classpath:static/banner.txt
   datasource:
-    url: jdbc:postgresql://172.28.0.2:5432/ibeer_db
-    driverClassName: org.postgresql.Driver
-    username: ${POSTGRES_USER:postgres}
-    password: ${POSTGRES_PASSWORD:secret}
+    primary:
+      driver-class-name: org.mariadb.jdbc.Driver
+      username: admin
+      password: ibeer-secret
+      url: jdbc:mariadb:aurora://ibeer-db.cluster-c3yl2gogn9ky.us-east-1.rds.amazonaws.com:3306/ibeer
+    secondary:
+      driver-class-name: org.mariadb.jdbc.Driver
+      username: admin #${DATASOURCE_USERNAME}
+      password: ibeer-secret #${DATASOURCE_PASSWORD}
+      url: jdbc:mariadb://ibeer-db.cluster-ro-c3yl2gogn9ky.us-east-1.rds.amazonaws.com:3306/ibeer
+#      url: jdbc:mariadb:loadbalance://ibeer-dbinstance1.c3yl2gogn9ky.us-east-1.rds.amazonaws.com:3306,ibeer-dbinstance2.c3yl2gogn9ky.us-east-1.rds.amazonaws.com:3306/ibeer
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.json
-    default-schema: public
-    liquibase-schema: public
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    database: postgresql
+    open-in-view: false
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
         id:
           new_generator_mappings: false
         default_schema: public
@@ -42,6 +47,17 @@ spring:
             non_contextual_creation: true
           temp:
             use_jdbc_metadata_defaults: false
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace
+
 management:
   endpoints:
     jmx:
@@ -64,7 +80,7 @@ swagger-ui:
     title: "REST support for iBeer API"
     description: "This is the REST UI support of iBeer API. Here you can perform REST operations on the API."
     license: "Apache License 2.0"
-    version: "0.0.1"
+    version: "0.0.6"
     base_package: "com.ipaixao.ibeer"
     contact_name: "Iago Paixao"
     contact_url: "https://github.com/iagopaixao/i-beer"

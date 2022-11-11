@@ -23,7 +23,8 @@ public class Beer {
 
     @Id
     @Column(name = "id", unique = true, nullable = false)
-    @GeneratedValue(generator = "beer_id_seq", strategy = GenerationType.SEQUENCE)
+//    @GeneratedValue(generator = "beer_id_seq", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @SequenceGenerator(name = "beer_seq", sequenceName = "beer_id_seq", allocationSize = 1)
     private Long id;
 

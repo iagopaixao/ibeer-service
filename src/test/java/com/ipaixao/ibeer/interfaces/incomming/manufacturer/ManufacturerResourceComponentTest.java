@@ -28,7 +28,7 @@ public class ManufacturerResourceComponentTest {
     @ParameterizedTest
     @ValueSource(longs = 10L)
     void shouldReturnABeerSuccessfully_whenGetByIdIsCalled(long id) throws Exception {
-        given(service.getById(id)).willReturn(manufacturerResponse());
+//        given(service.getById(id)).willReturn(manufacturerResponse());
 
         mockMvc.perform(get(fromUriString("/manufacturers/{id}").buildAndExpand(id).toUri())
                 .accept(APPLICATION_JSON))

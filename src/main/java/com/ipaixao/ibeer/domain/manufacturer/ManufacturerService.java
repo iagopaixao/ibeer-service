@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
@@ -23,33 +22,30 @@ import static lombok.AccessLevel.PROTECTED;
 @RequiredArgsConstructor(access = PROTECTED)
 public class ManufacturerService {
 
-    private final ManufacturerRepository repository;
+    private final ManufacturerDataProvider dataProvider;
     private final ManufacturerMapper mapper;
 
-    @Transactional
     public ManufacturerResponse create(ManufacturerDTO dto) {
         applyValidations(dto);
-        return mapper.toResponse(repository.save(mapper.toEntity(dto)));
+        return mapper.toResponse(dataProvider.create(mapper.toEntity(dto)));
     }
 
-    private void applyValidations(@NonNull ManufacturerDTO dto) {
+    public void applyValidations(@NonNull ManufacturerDTO dto) {
         final var duplicatedManufacturer = Optional.of(dto)
                 .filter(d -> nonNull(d.id()))
-                .flatMap(d -> repository.findByNameAndIdNot(d.name(), d.id()).map(mapper::toDTO))
-                .orElseGet(() -> repository.findByName(dto.name()).map(mapper::toDTO).orElse(null));
+                .flatMap(d -> dataProvider.getByNameAndIdNot(d.name(), d.id()).map(mapper::toDTO))
+                .orElseGet(() -> dataProvider.getByName(dto.name()).map(mapper::toDTO).orElse(null));
 
         new DuplicationValidator()
                 .accept(duplicatedManufacturer);
     }
 
-    @Transactional(readOnly = true)
     public Page<ManufacturerResponse> getAll(Pageable pageable) {
-        return repository.findAll(pageable).map(mapper::toResponse);
+        return dataProvider.getAll(pageable).map(mapper::toResponse);
     }
 
-    @Transactional(readOnly = true)
     public ManufacturerResponse getById(long id) {
-        return repository.findById(id)
+        return dataProvider.getById(id)
                 .map(mapper::toResponse)
                 .orElseThrow(() -> {
                     final var e = new EntityNotFoundException("Entity not found!");
@@ -58,13 +54,11 @@ public class ManufacturerService {
                 });
     }
 
-    @Transactional
     public ManufacturerResponse update(ManufacturerDTO dto) {
         return create(dto);
     }
 
-    @Transactional
     public void deleteById(long id) {
-        repository.deleteById(id);
+        dataProvider.deleteById(id);
     }
 }

@@ -4,13 +4,18 @@ server:
 spring:
   main:
     allow-bean-definition-overriding: true
-
   datasource:
-    url: jdbc:h2:mem:ibeer_db
     driverClassName: org.h2.Driver
     username: root
     password: secret
-
+    hikari:
+      jdbc-url:
+        primary: jdbc:h2:mem:primary_ibeer_db
+        replica: jdbc:h2:mem:replica_ibeer_db
+      pool-name:
+        primary: PrimaryHikariPool
+        replica: ReplicaHikariPool
+#    url: jdbc:h2:mem:ibeer_db
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.json
     default-schema: public
@@ -21,6 +26,7 @@ spring:
     database: h2
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
         id:
           new_generator_mappings: false
         default_schema: public
