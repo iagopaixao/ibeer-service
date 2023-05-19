@@ -25,6 +25,15 @@ public record BeerMockFactory() {
         );
     }
 
+    public static Stream<Arguments> beerUnPopuledStub() {
+        return Stream.of(
+                arguments(
+                        beerDTO(),
+                        beerResponse()
+                )
+        );
+    }
+
     public static Stream<Arguments> beersStub() {
         return Stream.of(
                 arguments(

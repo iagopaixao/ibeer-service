@@ -24,7 +24,7 @@ import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(BeerResource.class)
-public class BeerResourceComponentTest {
+class BeerResourceComponentTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean

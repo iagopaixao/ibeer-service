@@ -13,13 +13,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class BeerMapperTest {
+class BeerMapperTest {
     @Mock
     private BeerMapper beerMapper;
 
     @ParameterizedTest
     @MethodSource("com.ipaixao.ibeer.domain.beer.mock.BeerMockFactory#beerMapStub")
-    public void shouldMapBeerResponse_whenToResponseIsCalled(Beer beer, BeerResponse expected) {
+    void shouldMapBeerResponse_whenToResponseIsCalled(Beer beer, BeerResponse expected) {
         when(beerMapper.toResponse(beer())).thenReturn(expected);
 
         final var beerResponse = beerMapper.toResponse(beer);

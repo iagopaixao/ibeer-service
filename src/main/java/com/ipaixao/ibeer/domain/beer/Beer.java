@@ -45,7 +45,7 @@ public class Beer {
     @Column(nullable = false)
     private Integer milliliter;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "manufacturer_id")
     @ToString.Exclude
     private Manufacturer manufacturer;

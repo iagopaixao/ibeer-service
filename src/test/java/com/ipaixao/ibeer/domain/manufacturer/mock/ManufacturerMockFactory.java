@@ -13,10 +13,19 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 public record ManufacturerMockFactory() {
-    public static Stream<Arguments> manufacturerStub() {
+    public static Stream<Arguments> manufacturerPopuledStub() {
         return Stream.of(
                 arguments(
                         manufacturer(),
+                        manufacturerDTO(),
+                        manufacturerResponse()
+                )
+        );
+    }
+
+    public static Stream<Arguments> manufacturerUnPopuledStub() {
+        return Stream.of(
+                arguments(
                         manufacturerDTO(),
                         manufacturerResponse()
                 )

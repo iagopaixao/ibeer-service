@@ -35,8 +35,8 @@ public class ManufacturerService {
     private void applyValidations(@NonNull ManufacturerDTO dto) {
         final var duplicatedManufacturer = Optional.of(dto)
                 .filter(d -> nonNull(d.id()))
-                .flatMap(d -> repository.findByNameAndIdNot(d.name(), d.id()).map(mapper::toDTO))
-                .orElseGet(() -> repository.findByName(dto.name()).map(mapper::toDTO).orElse(null));
+                .flatMap(d -> repository.findIdByNameAndIdNot(d.name(), d.id()))
+                .orElseGet(() -> repository.findIdByName(dto.name()).orElse(null));
 
         new DuplicationValidator()
                 .accept(duplicatedManufacturer);
