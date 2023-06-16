@@ -90,7 +90,7 @@ public record BeerMockFactory() {
                 .id(10L)
                 .name("Heineken")
                 .style("Pale Lager")
-                .abv(5.0)
+                .abv(new BigDecimal("5.0"))
                 .ibu(19)
                 .milliliter(600)
                 .price(BigDecimal.valueOf(9.90))
@@ -126,6 +126,7 @@ public record BeerMockFactory() {
 
     public static BeerResponse beerResponse() {
         return new BeerResponse(
+                beer().getId(),
                 beer().getName(),
                 beer().getStyle(),
                 beer().getIbu(),

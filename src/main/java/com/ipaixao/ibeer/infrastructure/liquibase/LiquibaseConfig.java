@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 
+
 @Slf4j
 @Configuration
 @EnableConfigurationProperties(LiquibaseProperties.class)

@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.ipaixao.ibeer.domain.beer.mock.BeerMockFactory.beerResponse;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 public record ManufacturerMockFactory() {
@@ -83,6 +84,6 @@ public record ManufacturerMockFactory() {
     }
 
     public static ManufacturerResponse manufacturerResponse() {
-        return new ManufacturerResponse(manufacturer().getName());
+        return new ManufacturerResponse(manufacturer().getId(), manufacturer().getName(), List.of(beerResponse()));
     }
 }

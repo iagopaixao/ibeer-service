@@ -1,42 +1,79 @@
-version: '3.8'
-
-services:
-  ibeer_db:
-    container_name: ibeer-db
-    image: postgres:latest
-    networks:
-      ibeer_network_backend:
-        ipv4_address: 172.28.0.2
-    restart: always
-    ports:
-      - "127.0.0.1:5432:5432"
-    volumes:
-      - ibeer_db_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: ibeer_db
-      POSTGRES_PASSWORD: secret
-  ibeer-app:
-    container_name: ibeer-app
-    image: ipaixao/i-beer:0.0.1
-    depends_on:
-      - ibeer_db
-    networks:
-      ibeer_network_backend:
-        ipv4_address: 172.28.0.3
-    restart: always
-    links:
-      - ibeer-db
-    ports:
-      - "127.0.0.1:8081:8081"
+version: '3.9'
 
 networks:
-  ibeer_network_backend:
-    name: ibeer_network_backend
-    attachable: true
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.28.0.0/16
+#  ibeer_cache_network:
+#    internal: true
+  ibeer_db_network:
+    internal: true
+#  ibeer_api_network:
+#    internal: true
+#  proxy_ibeer_nework:
+
 volumes:
   ibeer_db_data:
     driver: local
+
+services:
+#  redis_ibeer:
+#    image: redis
+#    container_name: ibeer_cache
+#    restart: unless-stopped
+#    expose:
+#      - 6379
+#    networks:
+#      - ibeer_cache_network
+
+  mysql_ibeer:
+    image: mysql
+    container_name: mysql_ibeer
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: 'ibeer_db'
+      MYSQL_USER: 'ibeer'
+      MYSQL_PASSWORD: 'Bk55yc1u0eiqga6e'
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - ./mysql:/ibeer_db_data
+    ports:
+      - '3306:3306'
+#    networks:
+#      - ibeer_db_network
+
+#  ibeer-app:
+#    platform: linux/x86_64
+#    container_name: ibeer_app
+#    command:
+#      - './gradlew -S -i --parallel clean bootJar'
+#    build:
+#      context: ../
+#      dockerfile: Dockerfile
+#    image: ibeer-app
+#    depends_on:
+#      - postgres_ibeer
+#      - redis_ibeer
+#    networks:
+#      - ibeer_api_network
+#      - ibeer_db_network
+#      - ibeer_cache_network
+#    restart: unless-stopped
+#    healthcheck:
+#      test: 'curl -sS http://localhost/health'
+#      interval: 1s
+#      timeout: 30s
+#      retries: 60
+#
+#  proxy-ibeer:
+#    image: nginx
+#    container_name: proxy_ibeer
+#    restart: unless-stopped
+#    volumes:
+#      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+#      - ./nginx/proxy.conf:/etc/nginx/conf.d/proxy.conf
+#    ports:
+#      - '80:80'
+#    networks:
+#      - proxy_ibeer_nework
+#      - ibeer_api_network
+#    depends_on:
+#      - ibeer-app

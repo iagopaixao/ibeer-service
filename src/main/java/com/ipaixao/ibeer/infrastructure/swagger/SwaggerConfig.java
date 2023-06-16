@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(SwaggerConfig.SwaggerPropertiesConfig.class)
 public class SwaggerConfig {
 
-
     @Bean
     public OpenAPI openAPI(SwaggerPropertiesConfig properties) {
         return new OpenAPI()
@@ -36,7 +35,7 @@ public class SwaggerConfig {
 
     @Getter
     @Setter
-    @ConfigurationProperties(prefix = "swagger-ui.api-info")
+    @ConfigurationProperties(prefix = "api-info.swagger-ui")
     static class SwaggerPropertiesConfig {
         private String title;
         private String description;

@@ -4,19 +4,19 @@ import com.ipaixao.ibeer.domain.beer.BeerService;
 import com.ipaixao.ibeer.interfaces.incomming.beer.dto.BeerDTO;
 import com.ipaixao.ibeer.interfaces.incomming.beer.response.BeerResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
 @RequestMapping("/beers")
-@Schema(name = "Beer Resource", title = "Allows you to perform operations on the beer resource")
+@Tag(name = "Beer Resource", description = "Allows you to perform operations on the beer resource")
 public record BeerResource(BeerService service) {
 
     @PostMapping

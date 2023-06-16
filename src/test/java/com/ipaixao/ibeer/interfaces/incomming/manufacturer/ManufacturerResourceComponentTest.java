@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -20,7 +21,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(ManufacturerResource.class)
+@WebMvcTest(
+        controllers = ManufacturerResource.class,
+        excludeAutoConfiguration = SecurityAutoConfiguration.class
+)
 class ManufacturerResourceComponentTest {
     @Autowired private MockMvc mockMvc;
     @MockBean  private ManufacturerService service;

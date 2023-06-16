@@ -1,39 +1,39 @@
 package com.ipaixao.ibeer.infrastructure.security;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
-    private static final String[] ALLOWED_URIs;
+    private static final String[] ALLOWED_URIS;
+
     static {
-        ALLOWED_URIs = new String[]{
-                "/swagger-ui**", "/webjars/springfox-swagger-ui/**", "/swagger-resources/**", "/v2/**",
-                "/actuator/health**", "/error**", "/favicon.ico", "/swagger-ui/**", "/v3/**"
+        ALLOWED_URIS = new String[]{
+                "beers/**",
+                "manufacturers/**",
+                "/actuator/**",
+                "/error**",
+                "/v3/api-docs/**",
+                "/api-docs/**",
+                "/v3/api-docs.yaml",
+                "/swagger-ui/**",
+                "/swagger-ui.html"
         };
     }
 
-    @Override
-    public void configure(final HttpSecurity http) throws Exception {
-        http.csrf()
-                .disable()
-                .authorizeRequests()
-                .antMatchers(ALLOWED_URIs)
-                .permitAll()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(STATELESS);
-    }
-
-    @Override
-    public void configure(WebSecurity webSecurity) {
-        webSecurity.ignoring().antMatchers(ALLOWED_URIs);
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http.authorizeHttpRequests(authorization -> authorization.requestMatchers(ALLOWED_URIS).permitAll())
+                   .csrf(AbstractHttpConfigurer::disable)
+                   .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+                   .build();
     }
 }
