@@ -12,6 +12,7 @@ spring:
   banner:
     charset: 'UTF-8'
     location: classpath:static/banner.txt
+
   datasource:
     url: jdbc:mariadb://localhost:3306/ibeer_db?allowPublicKeyRetrieval=true&useSSL=false
     driverClassName: org.mariadb.jdbc.Driver
@@ -30,6 +31,7 @@ spring:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
 springdoc:
   swagger-ui:
     operationsSorter: method
@@ -56,7 +58,7 @@ management:
 
   metrics:
     tags:
-      job: ibeer-app
+      application: ibeer-service
     enable:
       jvm: true
     distribution:
@@ -68,15 +70,13 @@ management:
       percentiles-histogram[http.client.requests]: true
       slo[http.client.requests]: 100ms, 250ms, 500ms, 1s, 2s, 5s, 10s, 30s
 
-
-
 api-info:
   swagger-ui:
     title: "REST support for iBeer API"
     description: "This is the REST UI support of iBeer API. Here you can perform REST operations on the API."
     license: "Apache License 2.0"
-    version: "0.0.1"
+    version: "1.0.0"
     base_package: "com.ipaixao.ibeer"
     contact_name: "Iago Paixao"
-    contact_url: "https://github.com/iagopaixao/i-beer"
+    contact_url: "https://github.com/iagopaixao/ibeer-service"
     contact_email: "euiagopaixao@gmail.com"

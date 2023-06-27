@@ -6,4 +6,5 @@ import java.util.List;
 
 public record ManufacturerResponse(long id,
                                    String name,
+                                   String birthplace,
                                    List<BeerResponse> beers) {}

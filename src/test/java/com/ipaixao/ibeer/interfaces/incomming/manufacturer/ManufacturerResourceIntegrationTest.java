@@ -24,7 +24,8 @@ class ManufacturerResourceIntegrationTest extends BaseIntegrationTest {
 
     @BeforeEach
     void setup() {
-        repository.deleteAll();
+        if (!repository.findAll().isEmpty())
+            repository.deleteAll();
     }
 
     @ParameterizedTest
@@ -38,7 +39,8 @@ class ManufacturerResourceIntegrationTest extends BaseIntegrationTest {
         )
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
-                .andExpect(jsonPath("$.name").value(expected.name()));
+                .andExpect(jsonPath("$.name").value(expected.name()))
+                .andExpect(jsonPath("$.birthplace").value(expected.birthplace()));
     }
 
     @Test
@@ -48,6 +50,7 @@ class ManufacturerResourceIntegrationTest extends BaseIntegrationTest {
         mockMvc.perform(get(fromUriString("/manufacturers/{id}").buildAndExpand(savedManufacturer.getId()).toUri())
                 .accept(APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(savedManufacturer.getId()))
                 .andExpect(jsonPath("$.name").value(manufacturerResponse().name()));
     }
 }

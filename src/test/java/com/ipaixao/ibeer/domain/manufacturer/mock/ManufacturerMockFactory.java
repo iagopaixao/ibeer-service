@@ -69,7 +69,7 @@ public record ManufacturerMockFactory() {
 
     public static Manufacturer manufacturer() {
         return Manufacturer.builder()
-                .id(10L)
+                .id(1L)
                 .name(newManufacturer().getName())
                 .birthplace(newManufacturer().getBirthplace())
                 .build();
@@ -84,6 +84,11 @@ public record ManufacturerMockFactory() {
     }
 
     public static ManufacturerResponse manufacturerResponse() {
-        return new ManufacturerResponse(manufacturer().getId(), manufacturer().getName(), List.of(beerResponse()));
+        return new ManufacturerResponse(
+                manufacturer().getId(),
+                manufacturer().getName(),
+                manufacturer().getBirthplace(),
+                List.of(beerResponse())
+        );
     }
 }

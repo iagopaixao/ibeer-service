@@ -1,3 +1,4 @@
+[comment]: TODO: update badge GitHub actions 
 [![Build and Test Checker](https://github.com/iagopaixao/i-beer/actions/workflows/ci-build-checker.yml/badge.svg)](https://github.com/iagopaixao/i-beer/actions/workflows/ci-build-checker.yml)
 
 # iBeer :beers:

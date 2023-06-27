@@ -2,11 +2,12 @@ package com.ipaixao.ibeer.domain.beer;
 
 import com.ipaixao.ibeer.domain.common.DateAudit;
 import com.ipaixao.ibeer.domain.manufacturer.Manufacturer;
+import jakarta.persistence.*;
 import lombok.*;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 
+import static jakarta.persistence.CascadeType.PERSIST;
 import static lombok.AccessLevel.PRIVATE;
 
 @Data
@@ -42,7 +43,7 @@ public class Beer {
 
     @ToString.Exclude
     @JoinColumn(name = "manufacturer_id")
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {PERSIST})
     private Manufacturer manufacturer;
 
     @Embedded

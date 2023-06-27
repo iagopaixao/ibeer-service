@@ -2,13 +2,14 @@ package com.ipaixao.ibeer.domain.manufacturer;
 
 import com.ipaixao.ibeer.domain.beer.Beer;
 import com.ipaixao.ibeer.domain.common.DateAudit;
-import lombok.*;
-
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.DETACH;
+import static jakarta.persistence.CascadeType.REFRESH;
 import static lombok.AccessLevel.PRIVATE;
 
 @Data
@@ -31,7 +32,7 @@ public class Manufacturer {
     private String birthplace;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "manufacturer")
+    @OneToMany(mappedBy = "manufacturer", orphanRemoval = true, cascade = {REFRESH, DETACH})
     private List<Beer> beers = new ArrayList<>();
 
     @Embedded

@@ -21,11 +21,11 @@ ext {
 }
 
 group = "com.ipaixao.ibeer"
-version = "0.0.1"
+version = "1.0.0"
 
 sourceCompatibility = JavaVersion.VERSION_17
 
-applicationName = "i-beer"
+applicationName = "ibeer-service"
 
 configurations {
     compileOnly {
