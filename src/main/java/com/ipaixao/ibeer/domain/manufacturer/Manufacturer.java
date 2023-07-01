@@ -31,6 +31,7 @@ public class Manufacturer {
     @Column(nullable = false)
     private String birthplace;
 
+    @Builder.Default
     @ToString.Exclude
     @OneToMany(mappedBy = "manufacturer", orphanRemoval = true, cascade = {REFRESH, DETACH})
     private List<Beer> beers = new ArrayList<>();

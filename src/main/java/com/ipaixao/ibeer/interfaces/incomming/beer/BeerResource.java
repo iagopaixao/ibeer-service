@@ -16,7 +16,10 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/beers")
-@Tag(name = "Beer Resource", description = "Allows you to perform operations on the beer resource")
+@Tag(
+    name = "Beer Resource",
+    description = "Allows you to perform operations on the beer resource"
+)
 public record BeerResource(BeerService service) {
 
     @PostMapping

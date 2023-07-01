@@ -31,7 +31,7 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
       MYSQL_ROOT_HOST: '%'
     volumes:
-      - ./observability/mysql:/ibeer_db_data
+      - ./data/mysql:/ibeer_db_data
     ports:
       - '3306:3306'
     networks:
@@ -69,7 +69,7 @@ services:
     volumes:
       - ./observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       #      - ./prometheus/alert.rules:/etc/prometheus/alert.rules
-      - ./observability/prometheus/prometheus_data:/prometheus
+      - ./data/prometheus:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -100,7 +100,7 @@ services:
     image: grafana/grafana
     container_name: grafana_ibeer
     volumes:
-      - ./observability/grafana:/var/lib/grafana
+      - ./data/grafana:/var/lib/grafana
     restart: unless-stopped
     ports:
       - '3000:3000'

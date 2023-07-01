@@ -18,8 +18,8 @@ import java.net.URI;
 @RestController
 @RequestMapping("/manufacturers")
 @Tag(
-        name = "Manufacturer Resource",
-        description = "Allows you to perform operations on the manufacturer resource"
+       name = "Manufacturer Resource",
+       description = "Allows you to perform operations on the manufacturer resource"
 )
 public record ManufacturerResource(ManufacturerService service) {
 
