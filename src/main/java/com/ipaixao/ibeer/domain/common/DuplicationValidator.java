@@ -10,8 +10,8 @@ import static java.util.Objects.nonNull;
 public class DuplicationValidator implements Consumer<Object> {
 
     @Override
-    public void accept(Object dto) {
-        if (nonNull(dto)) {
+    public void accept(Object obj) {
+        if (nonNull(obj)) {
             final var e = new NameDuplicatedException("Name Duplicated!");
             log.error("m=accept, status=error, message={}", e.getMessage(), e);
             throw e;

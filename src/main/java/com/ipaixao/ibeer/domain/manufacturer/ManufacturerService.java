@@ -12,7 +12,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 import static java.util.Objects.nonNull;
@@ -34,9 +34,9 @@ public class ManufacturerService {
 
     private void applyValidations(@NonNull ManufacturerDTO dto) {
         final var duplicatedManufacturer = Optional.of(dto)
-                .filter(d -> nonNull(d.id()))
-                .flatMap(d -> repository.findByNameAndIdNot(d.name(), d.id()).map(mapper::toDTO))
-                .orElseGet(() -> repository.findByName(dto.name()).map(mapper::toDTO).orElse(null));
+                .filter(m -> nonNull(m.id()))
+                .flatMap(m -> repository.findIdByNameAndIdNot(m.name(), m.id()))
+                .orElseGet(() -> repository.findIdByName(dto.name()).orElse(null));
 
         new DuplicationValidator()
                 .accept(duplicatedManufacturer);

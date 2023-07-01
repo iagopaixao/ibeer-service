@@ -10,13 +10,23 @@ import org.springframework.data.domain.PageRequest;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.ipaixao.ibeer.domain.beer.mock.BeerMockFactory.beerResponse;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 public record ManufacturerMockFactory() {
-    public static Stream<Arguments> manufacturerStub() {
+    public static Stream<Arguments> manufacturerPopuledStub() {
         return Stream.of(
                 arguments(
                         manufacturer(),
+                        manufacturerDTO(),
+                        manufacturerResponse()
+                )
+        );
+    }
+
+    public static Stream<Arguments> manufacturerUnPopuledStub() {
+        return Stream.of(
+                arguments(
                         manufacturerDTO(),
                         manufacturerResponse()
                 )
@@ -59,7 +69,7 @@ public record ManufacturerMockFactory() {
 
     public static Manufacturer manufacturer() {
         return Manufacturer.builder()
-                .id(10L)
+                .id(1L)
                 .name(newManufacturer().getName())
                 .birthplace(newManufacturer().getBirthplace())
                 .build();
@@ -74,6 +84,11 @@ public record ManufacturerMockFactory() {
     }
 
     public static ManufacturerResponse manufacturerResponse() {
-        return new ManufacturerResponse(manufacturer().getName());
+        return new ManufacturerResponse(
+                manufacturer().getId(),
+                manufacturer().getName(),
+                manufacturer().getBirthplace(),
+                List.of(beerResponse())
+        );
     }
 }

@@ -6,14 +6,13 @@ import com.ipaixao.ibeer.interfaces.incomming.beer.mapper.BeerMapper;
 import com.ipaixao.ibeer.interfaces.incomming.beer.response.BeerResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 import static java.util.Objects.nonNull;
 import static java.util.Optional.of;
@@ -36,8 +35,8 @@ public class BeerService {
     private void applyValidations(@NonNull BeerDTO dto) {
         final var duplicatedBeer = of(dto)
                 .filter(d -> nonNull(d.id()))
-                .flatMap(d -> repository.findByNameAndIdNot(d.name(), d.id()).map(mapper::toDTO))
-                .orElseGet(() -> repository.findByName(dto.name()).map(mapper::toDTO).orElse(null));
+                .flatMap(d -> repository.getIdByNameAndIdNot(d.name(), d.id()))
+                .orElseGet(() -> repository.getIdByName(dto.name()).orElse(null));
 
         new DuplicationValidator()
                 .accept(duplicatedBeer);

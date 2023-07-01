@@ -2,29 +2,25 @@ package com.ipaixao.ibeer.domain.beer;
 
 import com.ipaixao.ibeer.domain.common.DateAudit;
 import com.ipaixao.ibeer.domain.manufacturer.Manufacturer;
+import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.Hibernate;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Objects;
 
+import static jakarta.persistence.CascadeType.PERSIST;
 import static lombok.AccessLevel.PRIVATE;
 
-@Table
+@Data
+@Table(name = "beer")
 @Entity
-@Getter
-@Setter
 @Builder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor(access = PRIVATE)
 public class Beer {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    @GeneratedValue(generator = "beer_id_seq", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "beer_seq", sequenceName = "beer_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)
@@ -34,7 +30,7 @@ public class Beer {
     private Integer ibu;
 
     @Column(nullable = false)
-    private Double abv;
+    private BigDecimal abv;
 
     @Column(nullable = false)
     private String style;
@@ -45,9 +41,9 @@ public class Beer {
     @Column(nullable = false)
     private Integer milliliter;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "manufacturer_id")
     @ToString.Exclude
+    @JoinColumn(name = "manufacturer_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {PERSIST})
     private Manufacturer manufacturer;
 
     @Embedded
@@ -55,17 +51,4 @@ public class Beer {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private DateAudit dateAudit = new DateAudit();
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Beer beer = (Beer) o;
-        return id != null && Objects.equals(id, beer.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

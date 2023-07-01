@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -37,7 +37,7 @@ class BeerServiceTest {
     @ParameterizedTest
     @MethodSource("com.ipaixao.ibeer.domain.beer.mock.BeerMockFactory#beerStub")
     void shouldSuccessfullyCreateABeer_whenCreateIsCalled(Beer beer, BeerDTO beerDTO, BeerResponse beerResponse) {
-        when(repository.findByName(beer.getName())).thenReturn(Optional.empty());
+        when(repository.getIdByName(beer.getName())).thenReturn(Optional.empty());
         when(mapper.toEntity(beerDTO)).thenReturn(beer);
         when(repository.save(beer)).thenReturn(beer);
         when(mapper.toResponse(beer)).thenReturn(beerResponse);
@@ -45,20 +45,18 @@ class BeerServiceTest {
         final var response = service.create(beerDTO);
 
         assertSame(response, beerResponse);
-        verify(repository).findByName(beer.getName());
+        verify(repository).getIdByName(beer.getName());
         verify(mapper).toEntity(beerDTO);
         verify(repository).save(beer);
         verify(mapper).toResponse(beer);
     }
 
     @ParameterizedTest
-    @MethodSource("com.ipaixao.ibeer.domain.beer.mock.BeerMockFactory#beerStub")
-    void shouldThrowsBeerNameDuplicatedException_whenCreateIsCalled(Beer beer, BeerDTO beerDTO) {
+    @MethodSource("com.ipaixao.ibeer.domain.beer.mock.BeerMockFactory#beerUnPopuledStub")
+    void shouldThrowsBeerNameDuplicatedException_whenCreateIsCalled(BeerDTO beerDTO) {
         final var beerNameCaptor = ArgumentCaptor.forClass(String.class);
-        final var beerCaptor = ArgumentCaptor.forClass(Beer.class);
 
-        when(repository.findByName(anyString())).thenReturn(Optional.of(beer));
-        when(mapper.toDTO(any(Beer.class))).thenReturn(beerDTO);
+        when(repository.getIdByName(anyString())).thenReturn(Optional.of(1L));
 
         final var expectedException = assertThrows(
                 NameDuplicatedException.class,
@@ -68,9 +66,7 @@ class BeerServiceTest {
         assertThat(expectedException)
                 .isInstanceOf(NameDuplicatedException.class);
         assertTrue(expectedException.getMessage().contains("Name Duplicated!"));
-        verify(repository).findByName(beerNameCaptor.capture());
-        verify(mapper).toDTO(beerCaptor.capture());
-        assertSame(beer, beerCaptor.getValue());
+        verify(repository).getIdByName(beerNameCaptor.capture());
         assertSame(beerDTO.name(), beerNameCaptor.getValue());
     }
 
@@ -94,7 +90,7 @@ class BeerServiceTest {
 
     @ParameterizedTest
     @MethodSource("com.ipaixao.ibeer.domain.beer.mock.BeerMockFactory#beerByIdStub")
-    public void shouldReturnABeerSuccessfully_whenGetByIdIsCalled(long id, Beer beer, BeerResponse beerResponse) {
+    void shouldReturnABeerSuccessfully_whenGetByIdIsCalled(long id, Beer beer, BeerResponse beerResponse) {
         final var idCaptor = ArgumentCaptor.forClass(Long.class);
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(beer));
@@ -103,7 +99,7 @@ class BeerServiceTest {
         final var response = service.getById(id);
 
         assertSame(response, beerResponse);
-        verify(repository).findById(idCaptor.capture());
+        verify(repository).findById((long) idCaptor.capture());
         assertSame(id, idCaptor.getValue());
         verify(mapper).toResponse(beer);
     }
@@ -124,7 +120,7 @@ class BeerServiceTest {
         assertThat(actualException)
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessage("Entity not found!");
-        verify(repository).findById(idCaptor.capture());
+        verify(repository).findById((long) idCaptor.capture());
         assertSame(id, idCaptor.getValue());
     }
 
@@ -134,8 +130,8 @@ class BeerServiceTest {
         final var beerNameCaptor = ArgumentCaptor.forClass(String.class);
         final var idCaptor = ArgumentCaptor.forClass(Long.class);
 
-        when(repository.findByNameAndIdNot(anyString(), anyLong())).thenReturn(Optional.empty());
-        when(repository.findByName(anyString())).thenReturn(Optional.empty());
+        when(repository.getIdByNameAndIdNot(anyString(), anyLong())).thenReturn(Optional.empty());
+        when(repository.getIdByName(anyString())).thenReturn(Optional.empty());
         when(mapper.toEntity(beerDTO)).thenReturn(beer);
         when(repository.save(beer)).thenReturn(beer);
         when(mapper.toResponse(beer)).thenReturn(beerResponse);
@@ -143,8 +139,8 @@ class BeerServiceTest {
         final var response = service.update(beerDTO);
 
         assertSame(response, beerResponse);
-        verify(repository).findByNameAndIdNot(beerNameCaptor.capture(), idCaptor.capture());
-        verify(repository).findByName(beerNameCaptor.capture());
+        verify(repository).getIdByNameAndIdNot(beerNameCaptor.capture(), idCaptor.capture());
+        verify(repository).getIdByName(beerNameCaptor.capture());
         assertSame(beerDTO.name(), beerNameCaptor.getValue());
         assertSame(beerDTO.id(), idCaptor.getValue());
         verify(mapper).toEntity(beerDTO);
@@ -153,14 +149,12 @@ class BeerServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("com.ipaixao.ibeer.domain.beer.mock.BeerMockFactory#beerStub")
-    void shouldThrowsBeerNameDuplicatedException_whenUpdateIsCalled(Beer beer, BeerDTO beerDTO) {
-        final var beerNameCaptor = ArgumentCaptor.forClass(String.class);
+    @MethodSource("com.ipaixao.ibeer.domain.beer.mock.BeerMockFactory#beerUnPopuledStub")
+    void shouldThrowsBeerNameDuplicatedException_whenUpdateIsCalled(BeerDTO beerDTO) {
+        final var nameCaptor = ArgumentCaptor.forClass(String.class);
         final var idCaptor = ArgumentCaptor.forClass(Long.class);
-        final var beerCaptor = ArgumentCaptor.forClass(Beer.class);
 
-        when(repository.findByNameAndIdNot(anyString(), anyLong())).thenReturn(Optional.of(beer));
-        when(mapper.toDTO(any(Beer.class))).thenReturn(beerDTO);
+        when(repository.getIdByNameAndIdNot(anyString(), anyLong())).thenReturn(Optional.of(1L));
 
         final var expectedException = assertThrows(
                 NameDuplicatedException.class,
@@ -170,11 +164,9 @@ class BeerServiceTest {
         assertThat(expectedException)
                 .hasMessage("Name Duplicated!")
                 .isInstanceOf(NameDuplicatedException.class);
-        verify(repository).findByNameAndIdNot(beerNameCaptor.capture(), idCaptor.capture());
-        verify(mapper).toDTO(beerCaptor.capture());
-        assertSame(beerDTO.name(), beerNameCaptor.getValue());
+        verify(repository).getIdByNameAndIdNot(nameCaptor.capture(), idCaptor.capture());
+        assertSame(beerDTO.name(), nameCaptor.getValue());
         assertSame(beerDTO.id(), idCaptor.getValue());
-        assertSame(beer, beerCaptor.getValue());
     }
 
     @ParameterizedTest

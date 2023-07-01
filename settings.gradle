@@ -5,4 +5,4 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-rootProject.name = 'i-beer'
+rootProject.name = 'ibeer-service'

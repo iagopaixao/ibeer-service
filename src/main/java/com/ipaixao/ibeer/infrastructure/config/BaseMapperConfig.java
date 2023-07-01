@@ -1,4 +1,4 @@
-package com.ipaixao.ibeer.infrastructure.mapstruct;
+package com.ipaixao.ibeer.infrastructure.config;
 
 import org.mapstruct.MapperConfig;
 import org.mapstruct.ReportingPolicy;

@@ -1,8 +1,10 @@
-[![Build and Test Checker](https://github.com/iagopaixao/i-beer/actions/workflows/ci-build-checker.yml/badge.svg)](https://github.com/iagopaixao/i-beer/actions/workflows/ci-build-checker.yml)
+[![Build and Test Checker](https://github.com/iagopaixao/ibeer-service/actions/workflows/ci-build-checker.yml/badge.svg)](https://github.com/iagopaixao/i-beer/actions/workflows/ci-build-checker.yml)
 
-# iBeer
+# iBeer :beers:
 
-A simple RESTful API to manage beers.
+A simple RESTful API for cataloging beers.
+
+![iBeer](docs/ibeer-api-logo.png)
 
 ## Min Requirements
 

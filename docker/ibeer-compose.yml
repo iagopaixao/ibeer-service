@@ -1,42 +1,111 @@
-version: '3.8'
-
-services:
-  ibeer_db:
-    container_name: ibeer-db
-    image: postgres:latest
-    networks:
-      ibeer_network_backend:
-        ipv4_address: 172.28.0.2
-    restart: always
-    ports:
-      - "127.0.0.1:5432:5432"
-    volumes:
-      - ibeer_db_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: ibeer_db
-      POSTGRES_PASSWORD: secret
-  ibeer-app:
-    container_name: ibeer-app
-    image: ipaixao/i-beer:0.0.1
-    depends_on:
-      - ibeer_db
-    networks:
-      ibeer_network_backend:
-        ipv4_address: 172.28.0.3
-    restart: always
-    links:
-      - ibeer-db
-    ports:
-      - "127.0.0.1:8081:8081"
+version: '3.9'
 
 networks:
-  ibeer_network_backend:
-    name: ibeer_network_backend
-    attachable: true
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.28.0.0/16
+  ibeer_app_network:
+    driver: bridge
+  ibeer_obervability_network:
+    driver: bridge
+
 volumes:
   ibeer_db_data:
-    driver: local
+    driver: bridge
+
+services:
+  redis-ibeer:
+    image: redis
+    container_name: redis_ibeer
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    networks:
+      - ibeer_app_network
+
+  mysql-ibeer:
+    image: mysql
+    container_name: mysql_ibeer
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: 'ibeer_db'
+      MYSQL_USER: 'ibeer'
+      MYSQL_PASSWORD: 'Bk55yc1u0eiqga6e'
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - ./data/mysql:/ibeer_db_data
+    ports:
+      - '3306:3306'
+    networks:
+      - ibeer_app_network
+
+  ibeer-service:
+    platform: linux/x86_64
+    container_name: ibeer_service
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    image: ibeer-service
+    ports:
+      - '8081:8081'
+    depends_on:
+      - mysql-ibeer
+      - redis-ibeer
+    networks:
+      - ibeer_app_network
+    env_file:
+      - ./.env
+    environment:
+      SPRING_DATASOURCE_URL: $MYSQL_DATABASE_URL
+    restart: unless-stopped
+    healthcheck:
+      test: 'curl -f http://host.docker.internal:8081/actuator/health || exit 1'
+      interval: 1m
+      timeout: 10s
+      retries: 60
+
+  prometheus-ibeer:
+    image: prom/prometheus:latest
+    container_name: prometheus_ibeer
+    restart: unless-stopped
+    volumes:
+      - ./observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      #      - ./prometheus/alert.rules:/etc/prometheus/alert.rules
+      - ./data/prometheus:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    ports:
+      - '9090:9090'
+    networks:
+      - ibeer_obervability_network
+      - ibeer_app_network
+
+  alertmanager-ibeer:
+    image: prom/alertmanager
+    container_name: alertmanager_ibeer
+    volumes:
+      - ./observability/alertmanager:/etc/alertmanager/:ro
+    ports:
+      - '9093:9093'
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+    networks:
+      - ibeer_obervability_network
+    depends_on:
+      - prometheus-ibeer
+
+  grafana-ibeer:
+    image: grafana/grafana
+    container_name: grafana_ibeer
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    networks:
+      - ibeer_obervability_network
+    depends_on:
+      - prometheus-ibeer
+      - alertmanager-ibeer

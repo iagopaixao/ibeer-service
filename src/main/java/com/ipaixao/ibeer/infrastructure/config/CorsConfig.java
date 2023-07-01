@@ -1,4 +1,4 @@
-package com.ipaixao.ibeer.infrastructure.security;
+package com.ipaixao.ibeer.infrastructure.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;

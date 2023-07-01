@@ -15,16 +15,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ManufacturerServiceTest {
+class ManufacturerServiceTest {
 
     @Mock
     private ManufacturerRepository repository;
@@ -35,9 +36,9 @@ public class ManufacturerServiceTest {
     private ManufacturerService service;
 
     @ParameterizedTest
-    @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturerStub")
-    void shouldSuccessfullyCreateABeer_whenCreateIsCalled(Manufacturer manufacturer, ManufacturerDTO manufacturerDTO, ManufacturerResponse beerResponse) {
-        when(repository.findByName(manufacturer.getName())).thenReturn(Optional.empty());
+    @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturerPopuledStub")
+    void shouldSuccessfullyCreateAManufacturer_whenCreateIsCalled(Manufacturer manufacturer, ManufacturerDTO manufacturerDTO, ManufacturerResponse beerResponse) {
+        when(repository.findIdByName(manufacturer.getName())).thenReturn(Optional.empty());
         when(mapper.toEntity(manufacturerDTO)).thenReturn(manufacturer);
         when(repository.save(manufacturer)).thenReturn(manufacturer);
         when(mapper.toResponse(manufacturer)).thenReturn(beerResponse);
@@ -45,20 +46,18 @@ public class ManufacturerServiceTest {
         final var response = service.create(manufacturerDTO);
 
         assertSame(response, beerResponse);
-        verify(repository).findByName(manufacturer.getName());
+        verify(repository).findIdByName(manufacturer.getName());
         verify(mapper).toEntity(manufacturerDTO);
         verify(repository).save(manufacturer);
         verify(mapper).toResponse(manufacturer);
     }
 
     @ParameterizedTest
-    @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturerStub")
-    void shouldThrowsBeerNameDuplicatedException_whenCreateIsCalled(Manufacturer manufacturer, ManufacturerDTO manufacturerDTO) {
-        final var beerNameCaptor = ArgumentCaptor.forClass(String.class);
-        final var beerCaptor = ArgumentCaptor.forClass(Manufacturer.class);
+    @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturerUnPopuledStub")
+    void shouldThrowsManufacturerNameDuplicatedException_whenCreateIsCalled(ManufacturerDTO manufacturerDTO) {
+        final var nameCaptor = ArgumentCaptor.forClass(String.class);
 
-        when(repository.findByName(anyString())).thenReturn(Optional.of(manufacturer));
-        when(mapper.toDTO(any(Manufacturer.class))).thenReturn(manufacturerDTO);
+        when(repository.findIdByName(anyString())).thenReturn(Optional.of(10L));
 
         final var expectedException = assertThrows(
                 NameDuplicatedException.class,
@@ -68,15 +67,13 @@ public class ManufacturerServiceTest {
         assertThat(expectedException)
                 .isInstanceOf(NameDuplicatedException.class);
         assertTrue(expectedException.getMessage().contains("Name Duplicated!"));
-        verify(repository).findByName(beerNameCaptor.capture());
-        verify(mapper).toDTO(beerCaptor.capture());
-        assertSame(manufacturer, beerCaptor.getValue());
-        assertSame(manufacturerDTO.name(), beerNameCaptor.getValue());
+        verify(repository).findIdByName(nameCaptor.capture());
+        assertSame(manufacturerDTO.name(), nameCaptor.getValue());
     }
 
     @ParameterizedTest
     @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturersStub")
-    public void shouldReturnAllBeersSuccessfully_whenGetAllIsCalled(
+    void shouldReturnAllManufacturersSuccessfully_whenGetAllIsCalled(
             Manufacturer manufacturer,
             PageImpl<Manufacturer> beers,
             ManufacturerResponse beerResponse,
@@ -94,7 +91,7 @@ public class ManufacturerServiceTest {
 
     @ParameterizedTest
     @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturerByIdStub")
-    public void shouldReturnABeerSuccessfully_whenGetByIdIsCalled(long id, Manufacturer manufacturer, ManufacturerResponse beerResponse) {
+    void shouldReturnAManufacturerSuccessfully_whenGetByIdIsCalled(long id, Manufacturer manufacturer, ManufacturerResponse beerResponse) {
         final var idCaptor = ArgumentCaptor.forClass(Long.class);
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(manufacturer));
@@ -103,7 +100,7 @@ public class ManufacturerServiceTest {
         final var response = service.getById(id);
 
         assertSame(response, beerResponse);
-        verify(repository).findById(idCaptor.capture());
+        verify(repository).findById((long) idCaptor.capture());
         assertSame(id, idCaptor.getValue());
         verify(mapper).toResponse(manufacturer);
     }
@@ -124,18 +121,18 @@ public class ManufacturerServiceTest {
         assertThat(actualException)
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessage("Entity not found!");
-        verify(repository).findById(idCaptor.capture());
+        verify(repository).findById((long) idCaptor.capture());
         assertSame(id, idCaptor.getValue());
     }
 
     @ParameterizedTest
-    @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturerStub")
-    void shouldSuccessfullyUpdateABeer_whenUpdateIsCalled(Manufacturer manufacturer, ManufacturerDTO manufacturerDTO, ManufacturerResponse beerResponse) {
+    @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturerPopuledStub")
+    void shouldSuccessfullyUpdateAManufacturer_whenUpdateIsCalled(Manufacturer manufacturer, ManufacturerDTO manufacturerDTO, ManufacturerResponse beerResponse) {
         final var beerNameCaptor = ArgumentCaptor.forClass(String.class);
         final var idCaptor = ArgumentCaptor.forClass(Long.class);
 
-        when(repository.findByNameAndIdNot(anyString(), anyLong())).thenReturn(Optional.empty());
-        when(repository.findByName(anyString())).thenReturn(Optional.empty());
+        when(repository.findIdByNameAndIdNot(anyString(), anyLong())).thenReturn(Optional.empty());
+        when(repository.findIdByName(anyString())).thenReturn(Optional.empty());
         when(mapper.toEntity(manufacturerDTO)).thenReturn(manufacturer);
         when(repository.save(manufacturer)).thenReturn(manufacturer);
         when(mapper.toResponse(manufacturer)).thenReturn(beerResponse);
@@ -143,8 +140,8 @@ public class ManufacturerServiceTest {
         final var response = service.update(manufacturerDTO);
 
         assertSame(response, beerResponse);
-        verify(repository).findByNameAndIdNot(beerNameCaptor.capture(), idCaptor.capture());
-        verify(repository).findByName(beerNameCaptor.capture());
+        verify(repository).findIdByNameAndIdNot(beerNameCaptor.capture(), idCaptor.capture());
+        verify(repository).findIdByName(beerNameCaptor.capture());
         assertSame(manufacturerDTO.name(), beerNameCaptor.getValue());
         assertSame(manufacturerDTO.id(), idCaptor.getValue());
         verify(mapper).toEntity(manufacturerDTO);
@@ -153,14 +150,12 @@ public class ManufacturerServiceTest {
     }
 
     @ParameterizedTest
-    @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturerStub")
-    void shouldThrowsNameDuplicatedException_whenUpdateIsCalled(Manufacturer manufacturer, ManufacturerDTO manufacturerDTO) {
-        final var beerNameCaptor = ArgumentCaptor.forClass(String.class);
+    @MethodSource("com.ipaixao.ibeer.domain.manufacturer.mock.ManufacturerMockFactory#manufacturerUnPopuledStub")
+    void shouldThrowsNameDuplicatedException_whenUpdateIsCalled(ManufacturerDTO manufacturerDTO) {
+        final var nameCaptor = ArgumentCaptor.forClass(String.class);
         final var idCaptor = ArgumentCaptor.forClass(Long.class);
-        final var beerCaptor = ArgumentCaptor.forClass(Manufacturer.class);
 
-        when(repository.findByNameAndIdNot(anyString(), anyLong())).thenReturn(Optional.of(manufacturer));
-        when(mapper.toDTO(any(Manufacturer.class))).thenReturn(manufacturerDTO);
+        when(repository.findIdByNameAndIdNot(anyString(), anyLong())).thenReturn(Optional.of(1L));
 
         final var expectedException = assertThrows(
                 NameDuplicatedException.class,
@@ -170,11 +165,9 @@ public class ManufacturerServiceTest {
         assertThat(expectedException)
                 .hasMessage("Name Duplicated!")
                 .isInstanceOf(NameDuplicatedException.class);
-        verify(repository).findByNameAndIdNot(beerNameCaptor.capture(), idCaptor.capture());
-        verify(mapper).toDTO(beerCaptor.capture());
-        assertSame(manufacturerDTO.name(), beerNameCaptor.getValue());
+        verify(repository).findIdByNameAndIdNot(nameCaptor.capture(), idCaptor.capture());
+        assertSame(manufacturerDTO.name(), nameCaptor.getValue());
         assertSame(manufacturerDTO.id(), idCaptor.getValue());
-        assertSame(manufacturer, beerCaptor.getValue());
     }
 
     @ParameterizedTest

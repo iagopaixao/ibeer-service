@@ -4,12 +4,13 @@
       "changeSet": {
         "id": "V20200518-01",
         "author": "iago.paixao",
+
         "changes": [
           {
             "createSequence": {
-              "minValue": 1,
               "sequenceName": "hibernate_sequence",
-              "startValue": 1
+              "startValue": 1,
+              "incrementBy": 1
             }
           }
         ]

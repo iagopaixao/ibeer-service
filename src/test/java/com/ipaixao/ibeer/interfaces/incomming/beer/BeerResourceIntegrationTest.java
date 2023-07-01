@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.web.util.UriComponentsBuilder.fromUriString;
 
-public class BeerResourceIntegrationTest extends BaseIntegrationTest {
+class BeerResourceIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private BeerRepository repository;

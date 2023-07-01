@@ -2,29 +2,27 @@ package com.ipaixao.ibeer.domain.manufacturer;
 
 import com.ipaixao.ibeer.domain.beer.Beer;
 import com.ipaixao.ibeer.domain.common.DateAudit;
+import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+import static jakarta.persistence.CascadeType.DETACH;
+import static jakarta.persistence.CascadeType.REFRESH;
 import static lombok.AccessLevel.PRIVATE;
 
-@Table
+@Data
+@Table(name = "manufacturer")
 @Entity
-@Getter
-@Setter
 @Builder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor(access = PRIVATE)
 public class Manufacturer {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    @GeneratedValue(generator = "manufacturer_id_seq", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "manufacturer_seq", sequenceName = "manufacturer_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)
@@ -33,26 +31,14 @@ public class Manufacturer {
     @Column(nullable = false)
     private String birthplace;
 
-    @OneToMany(mappedBy = "manufacturer", cascade = CascadeType.ALL)
+    @Builder.Default
     @ToString.Exclude
-    private List<Beer> beers;
+    @OneToMany(mappedBy = "manufacturer", orphanRemoval = true, cascade = {REFRESH, DETACH})
+    private List<Beer> beers = new ArrayList<>();
 
     @Embedded
     @Builder.Default
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private DateAudit dateAudit = new DateAudit();
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Manufacturer that = (Manufacturer) o;
-        return id != null && Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

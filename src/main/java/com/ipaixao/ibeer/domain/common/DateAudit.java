@@ -3,10 +3,10 @@ package com.ipaixao.ibeer.domain.common;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.PostUpdate;
-import javax.persistence.PrePersist;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.PostUpdate;
+import jakarta.persistence.PrePersist;
 
 @Getter
 @Embeddable

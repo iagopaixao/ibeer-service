@@ -4,19 +4,23 @@ import com.ipaixao.ibeer.domain.manufacturer.ManufacturerService;
 import com.ipaixao.ibeer.interfaces.incomming.manufacturer.dto.ManufacturerDTO;
 import com.ipaixao.ibeer.interfaces.incomming.manufacturer.response.ManufacturerResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
 @RequestMapping("/manufacturers")
-@Schema(name = "Manufacturer Resource", description = "Allows you to perform operations on the manufacturer resource")
+@Tag(
+       name = "Manufacturer Resource",
+       description = "Allows you to perform operations on the manufacturer resource"
+)
 public record ManufacturerResource(ManufacturerService service) {
 
     @PostMapping
@@ -47,7 +51,7 @@ public record ManufacturerResource(ManufacturerService service) {
     @DeleteMapping("/{id}")
     @Operation(summary = "Exclude a Manufacturer by id", method = "DELETE")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable long id) {
+    public void delete(@PathVariable @Min(value = 1, message = "{min_field_value}") long id) {
         service.deleteById(id);
     }
 }
