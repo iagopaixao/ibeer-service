@@ -15,16 +15,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Set up JDK 17
+    - name: Set UP JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'adopt'
         architecture: x64
+
     - name: Validate Gradle Wrapper
       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
-    - name: Build and Test
+
+    - name: App Build
       uses: gradle/gradle-build-action@v2
       with:
-        arguments: -S -i build
+        arguments: -S -i --parallel clean build -x test
+        gradle-version: 8.1
+
+    - name: App Testing
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: -S -i --parallel test
+        gradle-version: 8.1
+
+    - name: Mutation Testing Analysis
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: -S -i --parallel pitest
+        gradle-version: 8.1
+
+    - name: Code Coverage Analysis
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: -S -i --parallel sonar
         gradle-version: 8.1

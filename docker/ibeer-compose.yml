@@ -6,10 +6,6 @@ networks:
   ibeer_obervability_network:
     driver: bridge
 
-volumes:
-  ibeer_db_data:
-    driver: bridge
-
 services:
   redis-ibeer:
     image: redis
@@ -20,47 +16,44 @@ services:
     networks:
       - ibeer_app_network
 
-  mysql-ibeer:
-    image: mysql
-    container_name: mysql_ibeer
+  postgres-ibeer:
+    container_name: ibeer_db
+    image: postgres:latest
     restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: 'ibeer_db'
-      MYSQL_USER: 'ibeer'
-      MYSQL_PASSWORD: 'Bk55yc1u0eiqga6e'
-      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
-      MYSQL_ROOT_HOST: '%'
+    ports:
+      - '5432:5432'
     volumes:
-      - ./data/mysql:/ibeer_db_data
-    ports:
-      - '3306:3306'
+      - ./data/postgres:/var/lib/postgresql/data
     networks:
       - ibeer_app_network
-
-  ibeer-service:
-    platform: linux/x86_64
-    container_name: ibeer_service
-    build:
-      context: ../
-      dockerfile: Dockerfile
-    image: ibeer-service
-    ports:
-      - '8081:8081'
-    depends_on:
-      - mysql-ibeer
-      - redis-ibeer
-    networks:
-      - ibeer_app_network
-    env_file:
-      - ./.env
     environment:
-      SPRING_DATASOURCE_URL: $MYSQL_DATABASE_URL
-    restart: unless-stopped
-    healthcheck:
-      test: 'curl -f http://host.docker.internal:8081/actuator/health || exit 1'
-      interval: 1m
-      timeout: 10s
-      retries: 60
+      POSTGRES_DB: ibeer_db
+      POSTGRES_PASSWORD: secret
+
+#  ibeer-service:
+#    platform: linux/x86_64
+#    container_name: ibeer_service
+#    build:
+#      context: ../
+#      dockerfile: Dockerfile
+#    image: ibeer-service
+#    ports:
+#      - '8081:8081'
+#    depends_on:
+#      - postgres-ibeer
+#      - redis-ibeer
+#    networks:
+#      - ibeer_app_network
+#    env_file:
+#      - ./env-vars.env
+#    environment:
+#      SPRING_DATASOURCE_URL: $POSTGRES_DATABASE_URL
+#    restart: unless-stopped
+#    healthcheck:
+#      test: ["CMD-SHELL" "curl -f http://localhost:8081/health || exit 1"]
+#      interval: 45s
+#      timeout: 10s
+#      retries: 3
 
   prometheus-ibeer:
     image: prom/prometheus:latest

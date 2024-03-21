@@ -6,18 +6,23 @@ spring:
     name: iBeer
   main:
     allow-bean-definition-overriding: true
-  messages:
-    encoding: 'UTF-8'
-    basename: config.i18n.messages
   banner:
     charset: 'UTF-8'
     location: classpath:static/banner.txt
+  kafka:
+    bootstrap-servers:
+      - 127.0.0.1:9092
+    producer:
+      topic: beer-created
+      client-id: beer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
   datasource:
-    url: jdbc:mariadb://localhost:3306/ibeer_db?allowPublicKeyRetrieval=true&useSSL=false
-    driverClassName: org.mariadb.jdbc.Driver
-    username: ${MYSQL_USER:ibeer}
-    password: ${MYSQL_PASSWORD:Bk55yc1u0eiqga6e}
+    url: jdbc:postgresql://localhost:5432/ibeer_db
+    driverClassName: org.postgresql.Driver
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:secret}
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.json
 
@@ -26,6 +31,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
       naming:
@@ -42,6 +48,7 @@ springdoc:
 management:
   endpoints:
     web:
+      base-path: /
       exposure:
         include:
           - health
@@ -62,12 +69,12 @@ management:
     enable:
       jvm: true
     distribution:
-      percentiles[http.server.requests]: 0.5, 0.90, 0.95, 0.99
       percentiles-histogram[http.server.requests]: true
+      percentiles[http.server.requests]: 0.5, 0.90, 0.95, 0.99
       slo[http.server.requests]: 100ms, 250ms, 500ms, 1s, 2s, 5s, 10s, 30s
 
-      percentiles[http.client.requests]: 0.5, 0.90, 0.95, 0.99
       percentiles-histogram[http.client.requests]: true
+      percentiles[http.client.requests]: 0.5, 0.90, 0.95, 0.99
       slo[http.client.requests]: 100ms, 250ms, 500ms, 1s, 2s, 5s, 10s, 30s
 
 api-info:

@@ -8,7 +8,7 @@
     },
     {
       "include": {
-        "file": "db/changelog/db.changelog.V20200518-creates-table-manufacturer.json",
+        "file": "db/changelog/db.changelog.V20200518-creates-table-brewery.json",
         "relativeToChangelogFile": false
       }
     },{

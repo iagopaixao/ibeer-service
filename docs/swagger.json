@@ -19,12 +19,214 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "Brewery Resource",
+      "description": "Allows you to perform operations on the brewery resource"
+    },
+    {
+      "name": "Beer Resource",
+      "description": "Allows you to perform operations on the beer resource"
+    }
+  ],
   "paths": {
-    "/manufacturers": {
+    "/brewerys/{id}": {
       "get": {
         "tags": [
-          "manufacturer-resource"
+          "Brewery Resource"
         ],
+        "summary": "Gets a Brewery by id",
+        "operationId": "getOne",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BreweryResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Brewery Resource"
+        ],
+        "summary": "Updates a Brewery",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Brewery Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BreweryResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Brewery Resource"
+        ],
+        "summary": "Exclude a Brewery by id",
+        "operationId": "delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/beers/{id}": {
+      "get": {
+        "tags": [
+          "Beer Resource"
+        ],
+        "summary": "Gets a Beer by id",
+        "operationId": "getOne_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BeerResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Beer Resource"
+        ],
+        "summary": "Updates a Beer",
+        "operationId": "update_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Beer Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BeerResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Beer Resource"
+        ],
+        "summary": "Exclude a Beer by id",
+        "operationId": "delete_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/brewerys": {
+      "get": {
+        "tags": [
+          "Brewery Resource"
+        ],
+        "summary": "Gets all Breweries",
         "operationId": "getAll",
         "parameters": [
           {
@@ -54,35 +256,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PageManufacturerResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "manufacturer-resource"
-        ],
-        "operationId": "update",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ManufacturerDTO"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ManufacturerResponse"
+                  "$ref": "#/components/schemas/PageBreweryResponse"
                 }
               }
             }
@@ -91,14 +265,15 @@
       },
       "post": {
         "tags": [
-          "manufacturer-resource"
+          "Brewery Resource"
         ],
+        "summary": "Creates a new Brewery",
         "operationId": "create",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ManufacturerDTO"
+                "$ref": "#/components/schemas/Brewery Request"
               }
             }
           },
@@ -110,7 +285,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ManufacturerResponse"
+                  "$ref": "#/components/schemas/BreweryResponse"
                 }
               }
             }
@@ -121,8 +296,9 @@
     "/beers": {
       "get": {
         "tags": [
-          "beer-resource"
+          "Beer Resource"
         ],
+        "summary": "Gets all Beers",
         "operationId": "getAll_1",
         "parameters": [
           {
@@ -159,44 +335,17 @@
           }
         }
       },
-      "put": {
-        "tags": [
-          "beer-resource"
-        ],
-        "operationId": "update_1",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BeerDTO"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/BeerResponse"
-                }
-              }
-            }
-          }
-        }
-      },
       "post": {
         "tags": [
-          "beer-resource"
+          "Beer Resource"
         ],
+        "summary": "Creates a new Beer",
         "operationId": "create_1",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BeerDTO"
+                "$ref": "#/components/schemas/Beer Request"
               }
             }
           },
@@ -212,113 +361,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/manufacturers/{id}": {
-      "get": {
-        "tags": [
-          "manufacturer-resource"
-        ],
-        "operationId": "getOne",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ManufacturerResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "manufacturer-resource"
-        ],
-        "operationId": "delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "minimum": 1,
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
-    "/beers/{id}": {
-      "get": {
-        "tags": [
-          "beer-resource"
-        ],
-        "operationId": "getOne_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/BeerResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "beer-resource"
-        ],
-        "operationId": "delete_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
           }
         }
       }
@@ -326,7 +368,7 @@
   },
   "components": {
     "schemas": {
-      "ManufacturerDTO": {
+      "Brewery Request": {
         "required": [
           "birthplace",
           "name"
@@ -339,7 +381,8 @@
           "birthplace": {
             "type": "string"
           }
-        }
+        },
+        "description": "Request object used to create or update a new Brewery record"
       },
       "BeerResponse": {
         "type": "object",
@@ -368,12 +411,12 @@
           "price": {
             "type": "number"
           },
-          "manufacturer": {
+          "brewery": {
             "type": "string"
           }
         }
       },
-      "ManufacturerResponse": {
+      "BreweryResponse": {
         "type": "object",
         "properties": {
           "id": {
@@ -394,11 +437,11 @@
           }
         }
       },
-      "BeerDTO": {
+      "Beer Request": {
         "required": [
           "abv",
+          "brewery",
           "ibu",
-          "manufacturer",
           "milliliter",
           "name",
           "price",
@@ -429,12 +472,13 @@
             "type": "integer",
             "format": "int32"
           },
-          "manufacturer": {
-            "$ref": "#/components/schemas/ManufacturerDTO"
+          "brewery": {
+            "$ref": "#/components/schemas/Brewery Request"
           }
-        }
+        },
+        "description": "Request object used to create or update a new Beer record"
       },
-      "PageManufacturerResponse": {
+      "PageBreweryResponse": {
         "type": "object",
         "properties": {
           "totalPages": {
@@ -458,7 +502,7 @@
           "content": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ManufacturerResponse"
+              "$ref": "#/components/schemas/BreweryResponse"
             }
           },
           "number": {

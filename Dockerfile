@@ -4,7 +4,11 @@ LABEL name="iBeer Service"
 LABEL description="A simple RESTful API for cataloging beers"
 LABEL maintainer="euiagopaixao@gmail.com"
 
-RUN addgroup -S ibeer-group && adduser -S ibeer-user -G ibeer-group
+RUN apt-get -y update && \
+    apt-get -y install curl && \
+    addgroup -S ibeer-group && \
+    adduser -S ibeer-user -G ibeer-group
+
 USER ibeer-user:ibeer-group
 
 ARG JAR_FILE=build/libs/*jar

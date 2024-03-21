@@ -12,7 +12,7 @@
                 {
                   "column": {
                     "name": "id",
-                    "type": "bigint",
+                    "type": "bigserial",
                     "autoIncrement": true,
                     "constraints": {
                       "primaryKey": true,
@@ -22,12 +22,12 @@
                 },
                 {
                   "column": {
-                    "name": "manufacturer_id",
-                    "type": "bigint",
+                    "name": "brewery_id",
+                    "type": "bigserial",
                     "constraints": {
                       "nullable": false,
-                      "foreignKeyName": "fk_manufacturer_beer",
-                      "references": "manufacturer(id)"
+                      "foreignKeyName": "fk_brewery_beer",
+                      "references": "brewery(id)"
                     }
                   }
                 },
@@ -43,7 +43,7 @@
                 {
                   "column": {
                     "name": "abv",
-                    "type": "decimal(30,2)",
+                    "type": "numeric(30,2)",
                     "constraints": {
                       "nullable": false
                     }
@@ -70,7 +70,7 @@
                 {
                   "column": {
                     "name": "price",
-                    "type": "decimal(30,2)",
+                    "type": "numeric(30,2)",
                     "constraints": {
                       "nullable": false
                     }
@@ -88,7 +88,7 @@
                 {
                   "column": {
                     "name": "created_at",
-                    "type": "timestamp",
+                    "type": "timestamp without time zone",
                     "constraints": {
                       "nullable": false
                     }
@@ -97,7 +97,7 @@
                 {
                   "column": {
                     "name": "updated_at",
-                    "type": "timestamp",
+                    "type": "timestamp without time zone",
                     "constraints": {
                       "nullable": true
                     }

@@ -21,7 +21,7 @@ scrape_configs:
           - localhost:9090
 
   - job_name: ibeer-service
-    metrics_path: '/actuator/prometheus'
+    metrics_path: '/prometheus'
     static_configs:
       - targets:
           - host.docker.internal:8081

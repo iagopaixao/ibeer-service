@@ -18,7 +18,7 @@ public class WebSecurityConfig {
     static {
         ALLOWED_URIS = new String[]{
                 "beers/**",
-                "manufacturers/**",
+                "brewerys/**",
                 "/actuator/**",
                 "/error**",
                 "/v3/api-docs/**",
