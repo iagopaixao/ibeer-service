@@ -2,7 +2,7 @@ package com.ipaixao.ibeer.infrastructure.dataprovider.brewery.provider;
 
 import com.ipaixao.ibeer.domain.brewery.BreweryDomain;
 import com.ipaixao.ibeer.domain.brewery.gateway.BreweryQueryDataSourceGateway;
-import com.ipaixao.ibeer.infrastructure.dataprovider.brewery.mapper.CrudBreweryMapper;
+import com.ipaixao.ibeer.infrastructure.dataprovider.brewery.mapper.BreweryMapper;
 import com.ipaixao.ibeer.infrastructure.dataprovider.brewery.repository.JpaBreweryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import static lombok.AccessLevel.PROTECTED;
 @RequiredArgsConstructor(access = PROTECTED)
 public class JpaBreweryDataQueryProvider implements BreweryQueryDataSourceGateway {
     private final JpaBreweryRepository repository;
-    private final CrudBreweryMapper mapper;
+    private final BreweryMapper mapper;
 
     public Page<BreweryDomain> getAll(Pageable pageable) {
         return repository.findAll(pageable).map(mapper::toDomain);

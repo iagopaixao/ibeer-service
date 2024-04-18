@@ -7,4 +7,4 @@ import com.ipaixao.ibeer.infrastructure.dataprovider.brewery.entity.Brewery;
 import org.mapstruct.Mapper;
 
 @Mapper(config = BaseMapperConfig.class)
-public interface CrudBreweryMapper extends BaseEntityMapper<BreweryDomain, Brewery> {}
+public interface BreweryMapper extends BaseEntityMapper<BreweryDomain, Brewery> {}

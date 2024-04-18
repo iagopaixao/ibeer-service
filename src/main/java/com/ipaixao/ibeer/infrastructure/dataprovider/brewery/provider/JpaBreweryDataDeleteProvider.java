@@ -16,11 +16,6 @@ import static lombok.AccessLevel.PROTECTED;
 public class JpaBreweryDataDeleteProvider implements BreweryDeleteDataSourceGateway {
     private final JpaBreweryRepository repository;
 
-    @Transactional(readOnly = true)
-    public boolean existsById(long id) {
-        return repository.existsById(id);
-    }
-
     public void deleteById(long id) {
         repository.deleteById(id);
     }

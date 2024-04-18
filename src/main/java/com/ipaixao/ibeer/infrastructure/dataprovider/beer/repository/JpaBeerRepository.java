@@ -26,5 +26,5 @@ public interface JpaBeerRepository extends JpaRepository<Beer, Long> {
     Optional<Long> getIdByName(@Param("name") String name);
 
     @Query("SELECT id from Beer WHERE name = :name AND id <> :id")
-    Optional<Long> getIdByNameAndIdNot(@Param("name") String name, @Param("id") long id);
+    Optional<Long> getIdByNameAndNotEqualId(@Param("name") String name, @Param("id") long id);
 }

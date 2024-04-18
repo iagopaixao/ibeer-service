@@ -83,7 +83,7 @@ application {
 openApi {
     apiDocsUrl.set("http://localhost:8081/api-docs")
     outputDir.set(file("$projectDir/docs"))
-    outputFileName.set("swagger.json")
+    outputFileName.set("api-docs.json")
 }
 
 bootBuildImage {
@@ -157,5 +157,4 @@ sonar {
     }
 }
 
-//tasks.build.dependsOn("openApi")
 tasks.sonar.dependsOn("test", "jacocoTestReport", "jacocoTestCoverageVerification")

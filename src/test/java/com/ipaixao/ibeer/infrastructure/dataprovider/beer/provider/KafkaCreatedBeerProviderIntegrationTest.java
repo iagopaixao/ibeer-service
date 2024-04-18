@@ -1,4 +1,4 @@
-package com.ipaixao.ibeer.api.broker;
+package com.ipaixao.ibeer.infrastructure.dataprovider.beer.provider;
 
 import com.ipaixao.ibeer.api.controller.beer.BeerRequest;
 import com.ipaixao.ibeer.api.controller.beer.BeerResponse;
@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class CreatedBeerProducerIntegrationTest extends BaseIntegrationTest {
+class KafkaCreatedBeerProviderIntegrationTest extends BaseIntegrationTest {
     @Autowired
     RegisterBeerUseCase registerBeerUseCase;
     @Value("${spring.kafka.producer.topic}")

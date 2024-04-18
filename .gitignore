@@ -17,6 +17,9 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
+### Data Directories ###
+docker/data/
+
 ### IntelliJ IDEA ###
 .idea
 *.iws

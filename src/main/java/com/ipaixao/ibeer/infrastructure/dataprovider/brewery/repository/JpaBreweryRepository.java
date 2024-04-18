@@ -23,9 +23,9 @@ public interface JpaBreweryRepository extends JpaRepository<Brewery, Long> {
     Page<Brewery> findAll(@NonNull Pageable pageable);
 
     @Query("SELECT id from Brewery WHERE name = :name")
-    Optional<Long> findIdByName(@Param("name") String name);
+    Optional<Long> getIdByName(@Param("name") String name);
 
     @Query("SELECT id from Brewery WHERE name = :name AND id <> :id ")
-    Optional<Long> findIdByNameAndIdNot(@Param("name") String name, @Param("id") long id);
+    Optional<Long> getIdByNameAndNotEqualId(@Param("name") String name, @Param("id") long id);
 }
 
