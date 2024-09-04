@@ -46,5 +46,5 @@ jobs:
     - name: Code Coverage Analysis
       uses: gradle/gradle-build-action@v2
       with:
-        arguments: -S -i --parallel sonar
+        arguments: -S -i --parallel test jacocoTestReport
         gradle-version: 8.1
