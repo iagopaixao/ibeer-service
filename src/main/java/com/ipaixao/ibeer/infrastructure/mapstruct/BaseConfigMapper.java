@@ -1,4 +1,4 @@
-package com.ipaixao.ibeer.infrastructure.config;
+package com.ipaixao.ibeer.infrastructure.mapstruct;
 
 import org.mapstruct.MapperConfig;
 import org.mapstruct.ReportingPolicy;
@@ -15,4 +15,4 @@ import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValueCheckStrategy = ON_IMPLICIT_CONVERSION
 )
-public interface BaseMapperConfig {}
+public interface BaseConfigMapper {}

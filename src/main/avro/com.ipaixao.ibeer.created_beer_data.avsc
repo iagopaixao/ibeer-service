@@ -1,0 +1,27 @@
+{
+  "namespace": "com.ipaixao.ibeer",
+  "type": "record",
+  "name": "CreatedBeerData",
+  "fields": [
+    {"name": "id", "type": "long"},
+    {"name": "name","type": "string"},
+    {"name": "ibu","type": "int"},
+    {"name": "abv","type": "double"},
+    {"name": "style","type": "string"},
+    {"name": "price","type": "double"},
+    {"name": "milliliter","type": "int"},
+    {
+      "name": "brewery",
+      "type": {
+        "type": "record",
+        "name": "BreweryData",
+        "fields": [
+          {"name": "id", "type": "long"},
+          {"name": "name","type": "string"},
+          {"name": "birthplace","type": "string"},
+          {"name": "beers","type": {"type": "array", "items": "CreatedBeerData"}, "default": []}
+        ]
+      }
+    }
+  ]
+}

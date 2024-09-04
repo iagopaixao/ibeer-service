@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class KafkaCreatedBeerProviderIntegrationTest extends BaseIntegrationTest {
+class KafkaCreatedBeerDataProducerIntegrationTest extends BaseIntegrationTest {
     @Autowired
     RegisterBeerUseCase registerBeerUseCase;
     @Value("${spring.kafka.producer.topic}")

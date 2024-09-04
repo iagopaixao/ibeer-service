@@ -1,4 +1,4 @@
-package com.ipaixao.ibeer.infrastructure.base;
+package com.ipaixao.ibeer.infrastructure.mapstruct;
 
 public interface BaseRequestMapper<R, D> {
     D toDomain(R request);

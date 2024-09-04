@@ -13,27 +13,26 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    private static final String[] ALLOWED_URIS;
-
-    static {
-        ALLOWED_URIS = new String[]{
-                "beers/**",
-                "brewerys/**",
-                "/actuator/**",
-                "/error**",
-                "/v3/api-docs/**",
-                "/api-docs/**",
-                "/v3/api-docs.yaml",
-                "/swagger-ui/**",
-                "/swagger-ui.html"
-        };
-    }
+    private static final String[] ALLOWED_URIS = new String[]{
+            "beers/**",
+            "brewerys/**",
+            "/health/**",
+            "/info/**",
+            "/metrics/**",
+            "/prometheus/**",
+            "/error**",
+            "/v3/api-docs/**",
+            "/api-docs/**",
+            "/v3/api-docs.yaml",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorization -> authorization.requestMatchers(ALLOWED_URIS).permitAll())
-                   .csrf(AbstractHttpConfigurer::disable)
-                   .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                   .build();
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+                .build();
     }
 }

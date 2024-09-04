@@ -19,7 +19,7 @@ public class CreatedBeerListener {
     @TransactionalEventListener(classes = CreatedBeerEvent.class, condition = "#event != null")
     public void handlerCreatedBeerEvent(CreatedBeerEvent event) {
         if (event.getSource() instanceof BeerDomain beer) {
-            kafkaDispatcherGateway.dispatcher(beer);
+            kafkaDispatcherGateway.dispatch(beer);
             log.info("Event handled successfully. ID={}", beer.id());
         }
     }

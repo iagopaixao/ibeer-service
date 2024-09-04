@@ -1,6 +1,11 @@
 server:
   port: 8081
 
+avro:
+  remove:
+    java:
+      properties: true
+
 spring:
   main:
     allow-bean-definition-overriding: true
@@ -38,4 +43,3 @@ spring:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-
