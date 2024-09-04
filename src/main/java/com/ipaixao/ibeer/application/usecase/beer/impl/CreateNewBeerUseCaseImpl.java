@@ -7,7 +7,7 @@ import com.ipaixao.ibeer.application.usecase.beer.mapper.BeerRequestMapper;
 import com.ipaixao.ibeer.application.usecase.beer.mapper.BeerResponseMapper;
 import com.ipaixao.ibeer.application.validator.DuplicationValidator;
 import com.ipaixao.ibeer.domain.beer.gateway.BeerExistsVerificatorGateway;
-import com.ipaixao.ibeer.domain.beer.CreatedBeerEvent;
+import com.ipaixao.ibeer.domain.beer.BeerEvent;
 import com.ipaixao.ibeer.domain.beer.gateway.BeerRegisterDataSourceGateway;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CreateNewBeerUseCaseImpl implements RegisterBeerUseCase {
     private final BeerRequestMapper requestMapper;
     private final BeerResponseMapper responseMapper;
-    private final ApplicationEventPublisher publisher;
     private final BeerExistsVerificatorGateway existsGateway;
     private final BeerRegisterDataSourceGateway registerGateway;
 
@@ -31,8 +30,6 @@ public class CreateNewBeerUseCaseImpl implements RegisterBeerUseCase {
 
         final var domain = requestMapper.toDomain(request);
         final var createdBeer = registerGateway.create(domain);
-
-        publisher.publishEvent(new CreatedBeerEvent(createdBeer));
 
         return responseMapper.toResponse(createdBeer);
     }

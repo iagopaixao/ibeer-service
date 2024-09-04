@@ -3,7 +3,7 @@ package com.ipaixao.ibeer.infrastructure.dataproducer;
 import com.ipaixao.ibeer.api.controller.beer.BeerResponse;
 import com.ipaixao.ibeer.application.usecase.beer.mapper.BeerResponseMapper;
 import com.ipaixao.ibeer.domain.beer.BeerDomain;
-import com.ipaixao.ibeer.domain.beer.gateway.CreatedBeerKafkaDispatcherGateway;
+import com.ipaixao.ibeer.domain.beer.gateway.BeerDispatcherKafkaGateway;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class KafkaCreatedBeerDataProducer implements CreatedBeerKafkaDispatcherGateway {
+public class KafkaBeerDataProducer implements BeerDispatcherKafkaGateway {
     @Value("${spring.kafka.producer.topic}")
     private String topic;
 

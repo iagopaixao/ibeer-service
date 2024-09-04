@@ -1,8 +1,8 @@
 package com.ipaixao.ibeer.application.listener;
 
 import com.ipaixao.ibeer.domain.beer.BeerDomain;
-import com.ipaixao.ibeer.domain.beer.CreatedBeerEvent;
-import com.ipaixao.ibeer.domain.beer.gateway.CreatedBeerKafkaDispatcherGateway;
+import com.ipaixao.ibeer.domain.beer.BeerEvent;
+import com.ipaixao.ibeer.domain.beer.gateway.BeerDispatcherKafkaGateway;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -13,13 +13,13 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Component
 @RequiredArgsConstructor
 public class CreatedBeerListener {
-    private final CreatedBeerKafkaDispatcherGateway kafkaDispatcherGateway;
+    private final BeerDispatcherKafkaGateway kafkaGateway;
 
     @Async
-    @TransactionalEventListener(classes = CreatedBeerEvent.class, condition = "#event != null")
-    public void handlerCreatedBeerEvent(CreatedBeerEvent event) {
+    @TransactionalEventListener(classes = BeerEvent.class, condition = "#event != null")
+    public void handlerCreatedBeerEvent(BeerEvent event) {
         if (event.getSource() instanceof BeerDomain beer) {
-            kafkaDispatcherGateway.dispatch(beer);
+            kafkaGateway.dispatch(beer);
             log.info("Event handled successfully. ID={}", beer.id());
         }
     }
