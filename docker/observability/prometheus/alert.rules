@@ -1,0 +1,28 @@
+groups:
+- name: ops-ibeer-service
+  rules:
+  - alert: 'QUEBRA DE SLO'
+    expr: (histogram_quantile(0.90, sum(rate(http_server_requests_seconds_bucket{job="ibeer-service", uri!="/prometheus"}[1m])) by (le))) >= 0.5
+    for: 1m
+    labels:
+      app: 'ibeer-service'
+      severity: 'critical'
+      group: 'ops-ibeer-service'
+      env: 'production'
+    annotations:
+      title: 'QUEBRA DE SLO'
+      summary: '90% das requisições estão sendo atendidas a 500ms ou mais.'
+      description: 'O serviço iBeer está violando o SLO. 90% das requisições estão sendo atendidas em 500ms ou mais no último minuto.'
+
+  - alert: 'ERRO 500'
+    expr: (sum(rate(http_server_requests_seconds_count{job="ibeer-service", status="500", uri!="/prometheus"}[1m]))/sum(rate(http_server_requests_seconds_count{job="ibeer-service", uri!="/prometheus"}[1m]))) >= 0.01
+    for: 1m
+    labels:
+      app: 'ibeer-service'
+      severity: 'critical'
+      group: 'ops-ibeer-service'
+      env: 'production'
+    annotations:
+      title: 'ERRO 500'
+      summary: 'Erro 500 acima de 1% no último minuto.'
+      description: 'O serviço iBeer está com taxa de erros 500 acima de 1% no último minuto'

@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: iBeer
+    name: ibeer-service
   main:
     allow-bean-definition-overriding: true
   banner:
@@ -65,7 +65,7 @@ management:
 
   metrics:
     tags:
-      application: ibeer-service
+      application: ${spring.application.name:ibeer-service}
     enable:
       jvm: true
     distribution:

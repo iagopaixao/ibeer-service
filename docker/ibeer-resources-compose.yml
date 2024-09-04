@@ -1,0 +1,56 @@
+version: '3.9'
+
+networks:
+  ibeer_app_network:
+    driver: bridge
+
+services:
+  redis-ibeer:
+    image: redis
+    container_name: redis_ibeer
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    networks:
+      - ibeer_app_network
+
+  postgres-ibeer:
+    container_name: ibeer_db
+    image: postgres:latest
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      - ibeer_app_network
+    environment:
+      POSTGRES_DB: ibeer_db
+      POSTGRES_PASSWORD: secret
+
+# ENABLES DOCKERIZATION OF THE APPLICATION
+#
+# ibeer-service:
+#    platform: linux/x86_64
+#    container_name: ibeer_service
+#    build:
+#      context: ../
+#      dockerfile: Dockerfile
+#    image: ibeer-service
+#    ports:
+#      - '8081:8081'
+#    depends_on:
+#      - postgres-ibeer
+#      - redis-ibeer
+#    networks:
+#      - ibeer_app_network
+#    env_file:
+#      - ./env-vars.env
+#    environment:
+#      SPRING_DATASOURCE_URL: $POSTGRES_DATABASE_URL
+#    restart: unless-stopped
+#    healthcheck:
+#      test: ["CMD-SHELL" "curl -f http://localhost:8081/health || exit 1"]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 3
